@@ -16,31 +16,25 @@ import { useTheme } from 'next-themes';
 import { motion, Variants } from 'framer-motion';
 
 const links = [
-  { href: '#',         label: '',        icon: <Home size={20} /> },
-  { href: '#uslugi',   label: 'Usługi',  icon: <LayoutGrid size={20} /> },
-  { href: '#projekty', label: 'Projekty',icon: <ImageIcon size={20} /> },
-  { href: '#o-mnie',   label: 'O mnie',  icon: <User size={20} /> },
-  { href: '#wspolpraca',label: 'Proces', icon: <FileText size={20} /> },
-  { href: '#kontakt',  label: 'Kontakt', icon: <Home size={20} /> },
+  { href: '#',        label: '',       icon: <Home size={20} /> },
+  { href: '#uslugi',  label: 'Usługi', icon: <LayoutGrid size={20} /> },
+  { href: '#projekty',label: 'Projekty',icon: <ImageIcon size={20} /> },
+  { href: '#o-mnie',  label: 'O mnie', icon: <User size={20} /> },
+  { href: '#wspolpraca', label: 'Proces', icon: <FileText size={20} /> },
+  { href: '#kontakt', label: 'Kontakt',icon: <Home size={20} /> },
 ];
 
 const navVariants: Variants = {
   hidden:  { y: -50, opacity: 0 },
   visible: {
     y: 0, opacity: 1,
-    transition: {
-      type: 'spring', stiffness: 300, damping: 30,
-      when: 'beforeChildren', staggerChildren: 0.1
-    }
+    transition: { type: 'spring', stiffness: 300, damping: 30, when: 'beforeChildren', staggerChildren: 0.1 }
   }
 };
 
 const itemVariants: Variants = {
   hidden:  { opacity: 0, y: 10 },
-  visible: {
-    opacity: 1, y: 0,
-    transition: { type: 'spring', stiffness: 300, damping: 20 }
-  }
+  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 20 } }
 };
 
 export default function Navbar() {
@@ -58,6 +52,7 @@ export default function Navbar() {
 
   return (
     <>
+      {/* gradient w defs */}
       <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
         <defs>
           <linearGradient id="nav-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -117,6 +112,7 @@ export default function Navbar() {
             );
           })}
 
+          {/* ThemeToggle */}
           <motion.div
             variants={itemVariants}
             onMouseEnter={() => setHoveredIdx(links.length)}
@@ -127,19 +123,21 @@ export default function Navbar() {
               onClick={toggleTheme}
               className="flex items-center p-2 rounded-full transition-all duration-200 ease-out"
             >
-              {theme === 'dark'
-                ? (
-                  <Sun
-                    size={20}
-                    stroke={hoveredIdx === links.length ? 'url(#nav-gradient)' : '#ffffff'}
-                  />
-                )
-                : (
-                  <Moon
-                    size={20}
-                    stroke={hoveredIdx === links.length ? 'url(#nav-gradient)' : '#ffffff'}
-                  />
-                )}
+              {theme === 'dark' ? (
+                <Sun
+                  size={20}
+                  stroke={hoveredIdx === links.length ? 'url(#nav-gradient)' : '#ffffff'}
+                  strokeWidth={2}
+                  fill="none"
+                />
+              ) : (
+                <Moon
+                  size={20}
+                  stroke={hoveredIdx === links.length ? 'url(#nav-gradient)' : '#ffffff'}
+                  strokeWidth={2}
+                  fill="none"
+                />
+              )}
             </button>
           </motion.div>
         </motion.div>
