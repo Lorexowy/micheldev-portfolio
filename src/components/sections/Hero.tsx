@@ -85,7 +85,7 @@ export default function Hero() {
       <motion.div variants={item} className="relative z-10 w-full md:w-1/2 max-w-xl text-center md:text-left">
         <motion.div className="mb-4" variants={item}>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight">
-            Tworzę wyjątkowe projekty{" "}
+            Cześć, jestem{" "}
             <motion.span
               className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-[length:200%_200%]"
               animate={{
@@ -94,7 +94,7 @@ export default function Hero() {
               transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
               whileHover={{ scale: 1.05 }}
             >
-              wizualne
+              MichelDev
               <motion.div
                 className="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-lg blur-lg"
                 animate={{ opacity: [0, 0.5, 0] }}
@@ -108,10 +108,9 @@ export default function Hero() {
           variants={item}
           className="text-base sm:text-lg md:text-xl text-gray-300 mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed"
         >
-          Specjalizuję się w {" "}
-          <span className="text-indigo-400 font-semibold">projektowaniu graficznym</span> i{" "}
-          <span className="text-purple-400 font-semibold">tworzeniu stron internetowych</span>.{" "}
-          Pomagam markom wyróżnić się poprzez kompleksowe rozwiązania wizualne.
+          Tworzę nowoczesne strony internetowe i projekty graficzne, które{" "}
+          <span className="text-indigo-400 font-semibold">przyciągają uwagę</span> i{" "}
+          <span className="text-purple-400 font-semibold">konwertują</span>.
         </motion.p>
 
         <motion.div
@@ -120,34 +119,43 @@ export default function Hero() {
         >
           <motion.a
             href="#projekty"
-            className="group relative px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold rounded-xl overflow-hidden transition-all duration-300"
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
+            className="group relative px-8 py-4 bg-white text-gray-900 font-semibold rounded-lg overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl"
+            whileHover={{ scale: 1.02, y: -1 }}
+            whileTap={{ scale: 0.98 }}
           >
-            <span className="relative z-10">Moje projekty</span>
+            <span className="relative z-10 flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0l-4-4m4 4l-4 4" />
+              </svg>
+              Zobacz portfolio
+            </span>
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600"
+              className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100"
               initial={{ x: "-100%" }}
               whileHover={{ x: 0 }}
               transition={{ duration: 0.3 }}
             />
-            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.a>
 
           <motion.a
             href="#kontakt"
-            className="group relative px-8 py-4 border-2 border-purple-500/50 text-purple-300 hover:text-white font-semibold rounded-xl backdrop-blur-sm bg-white/5 transition-all duration-300"
-            whileHover={{
-              scale: 1.05,
-              y: -2,
-              borderColor: "rgb(168 85 247)",
-              backgroundColor: "rgba(168, 85, 247, 0.1)",
-            }}
-            whileTap={{ scale: 0.95 }}
+            className="group relative px-8 py-4 border border-white/20 text-white font-semibold rounded-lg backdrop-blur-sm bg-white/5 transition-all duration-300 hover:bg-white/10 hover:border-white/30"
+            whileHover={{ scale: 1.02, y: -1 }}
+            whileTap={{ scale: 0.98 }}
           >
-            <span className="relative z-10">Skontaktuj się</span>
+            <span className="relative z-10 flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
+              </svg>
+              Rozpocznij projekt
+            </span>
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl"
+              className="absolute inset-0 bg-gradient-to-r from-white/5 to-white/10 rounded-lg"
               initial={{ opacity: 0 }}
               whileHover={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
