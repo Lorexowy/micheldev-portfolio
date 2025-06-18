@@ -1,110 +1,277 @@
-'use client';
+"use client"
 
-import { Inter } from 'next/font/google';
-import { motion, Variants } from 'framer-motion';
+import { Inter } from "next/font/google"
+import { motion, type Variants, useScroll, useTransform } from "framer-motion"
+import { useEffect, useState } from "react"
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
 const container: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { when: 'beforeChildren', staggerChildren: 0.2 },
+    transition: { when: "beforeChildren", staggerChildren: 0.15 },
   },
-};
+}
 
 const item: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { type: 'spring', stiffness: 200, damping: 25 },
+    transition: { type: "spring", stiffness: 200, damping: 25 },
   },
-};
+}
 
 export default function Hero() {
+  const { scrollY } = useScroll()
+  const y1 = useTransform(scrollY, [0, 300], [0, -50])
+  const y2 = useTransform(scrollY, [0, 300], [0, -100])
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth) * 100,
+        y: (e.clientY / window.innerHeight) * 100,
+      })
+    }
+
+    window.addEventListener("mousemove", handleMouseMove)
+    return () => window.removeEventListener("mousemove", handleMouseMove)
+  }, [])
+
   return (
     <motion.section
-      className={`relative overflow-hidden min-h-screen flex flex-col-reverse md:flex-row items-center justify-center px-6 md:px-16 lg:px-24 bg-gradient-to-b from-black to-gray-900 ${inter.variable}`}
+      className={`relative overflow-hidden min-h-screen flex flex-col md:flex-row gap-12 md:gap-16 items-center justify-center px-6 md:px-16 lg:px-24 bg-gradient-to-br from-black via-gray-900 to-black ${inter.variable}`}
       initial="hidden"
       animate="visible"
       variants={container}
+      style={{
+        background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(99, 102, 241, 0.1) 0%, transparent 50%)`,
+      }}
     >
-      {/* Animated background blobs */}
+      {/* Animated background particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none"></div>
+
+      {/* Gradient orbs */}
       <motion.div
-        className="absolute -top-20 -left-20 w-64 h-64 bg-purple-500 opacity-30 rounded-full"
-        animate={{ scale: [1, 1.2, 1], x: [0, 20, 0], y: [0, 20, 0] }}
-        transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut' }}
+        className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-full blur-3xl"
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Number.POSITIVE_INFINITY,
+          ease: "easeInOut",
+        }}
+        style={{ y: y1 }}
       />
       <motion.div
-        className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-500 opacity-20 rounded-full"
-        animate={{ scale: [1, 1.1, 1], x: [0, -20, 0], y: [0, -20, 0] }}
-        transition={{ repeat: Infinity, duration: 12, ease: 'easeInOut' }}
+        className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl"
+        animate={{
+          scale: [1.2, 1, 1.2],
+          opacity: [0.2, 0.4, 0.2],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Number.POSITIVE_INFINITY,
+          ease: "easeInOut",
+        }}
+        style={{ y: y2 }}
       />
-      <motion.div variants={item} className="relative z-10 w-full md:w-1/2 text-center md:text-left mt-8 md:mt-0">
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-4">
-          Cześć, jestem{' '}
-          <motion.span
-            className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500 bg-[length:200%_200%]"
-            animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
-            transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
-          >
-            MichelDev
-          </motion.span>
-        </h1>
-        <p className="text-lg sm:text-xl text-gray-300 mb-8">
-          Tworzę nowoczesne strony internetowe i projekty graficzne, które przyciągają uwagę i konwertują.
-        </p>
+
+      <motion.div variants={item} className="relative z-10 w-full md:w-1/2 max-w-xl text-center md:text-left">
+        <motion.div className="mb-4" variants={item}>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight">
+            Tworzę wyjątkowe projekty{" "}
+            <motion.span
+              className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-[length:200%_200%]"
+              animate={{
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+              }}
+              transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+              whileHover={{ scale: 1.05 }}
+            >
+              wizualne
+              <motion.div
+                className="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-lg blur-lg"
+                animate={{ opacity: [0, 0.5, 0] }}
+                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+              />
+            </motion.span>
+          </h1>
+        </motion.div>
+
+        <motion.p
+          variants={item}
+          className="text-base sm:text-lg md:text-xl text-gray-300 mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed"
+        >
+          Specjalizuję się w {" "}
+          <span className="text-indigo-400 font-semibold">projektowaniu graficznym</span> i{" "}
+          <span className="text-purple-400 font-semibold">tworzeniu stron internetowych</span>.{" "}
+          Pomagam markom wyróżnić się poprzez kompleksowe rozwiązania wizualne.
+        </motion.p>
+
         <motion.div
           variants={item}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center md:justify-start mt-8"
         >
           <motion.a
-            variants={item}
             href="#projekty"
-            className="px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-lg transition"
+            className="group relative px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold rounded-xl overflow-hidden transition-all duration-300"
+            whileHover={{ scale: 1.05, y: -2 }}
+            whileTap={{ scale: 0.95 }}
           >
-            Moje projekty
+            <span className="relative z-10">Moje projekty</span>
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600"
+              initial={{ x: "-100%" }}
+              whileHover={{ x: 0 }}
+              transition={{ duration: 0.3 }}
+            />
+            <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.a>
+
           <motion.a
-            variants={item}
             href="#kontakt"
-            className="px-6 py-3 border-2 border-purple-500 hover:border-purple-600 text-purple-500 hover:text-purple-600 font-semibold rounded-lg transition"
+            className="group relative px-8 py-4 border-2 border-purple-500/50 text-purple-300 hover:text-white font-semibold rounded-xl backdrop-blur-sm bg-white/5 transition-all duration-300"
+            whileHover={{
+              scale: 1.05,
+              y: -2,
+              borderColor: "rgb(168 85 247)",
+              backgroundColor: "rgba(168, 85, 247, 0.1)",
+            }}
+            whileTap={{ scale: 0.95 }}
           >
-            Skontaktuj się
+            <span className="relative z-10">Skontaktuj się</span>
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl"
+              initial={{ opacity: 0 }}
+              whileHover={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            />
           </motion.a>
         </motion.div>
       </motion.div>
-      {/* Mockup preview */}
+
+      {/* Enhanced mockup preview */}
       <motion.div
         variants={item}
-        className="relative z-10 w-full md:w-1/2 flex justify-center mb-8 md:mb-0"
+        className="relative z-10 w-full md:w-1/2 flex justify-center items-center"
+        animate={{
+          y: [-10, 10, -10],
+        }}
+        transition={{
+          duration: 6,
+          repeat: Number.POSITIVE_INFINITY,
+          ease: "easeInOut",
+        }}
       >
-        <div className="w-80 h-64 bg-white/10 dark:bg-black/30 backdrop-blur-lg border border-white/20 rounded-xl p-4 relative overflow-hidden">
-          {/* Browser header */}
-          <div className="flex items-center gap-2 mb-3">
-            <span className="w-3 h-3 bg-red-500 rounded-full"></span>
-            <span className="w-3 h-3 bg-yellow-500 rounded-full"></span>
-            <span className="w-3 h-3 bg-green-500 rounded-full"></span>
-            <div className="flex-1 h-2 bg-white/20 rounded-full"></div>
+        <motion.div
+          className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 overflow-hidden w-72 sm:w-80 md:w-[380px] h-64 sm:h-80 md:h-[500px] shadow-2xl"
+          whileHover={{
+            scale: 1.02,
+            rotateY: 5,
+            rotateX: 5,
+          }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          style={{
+            transformStyle: "preserve-3d",
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)",
+          }}
+        >
+          {/* Enhanced browser header */}
+          <div className="flex items-center gap-2 mb-4 p-2 bg-white/5 rounded-xl">
+            <div className="flex gap-2">
+              <motion.span className="w-3 h-3 bg-red-500 rounded-full cursor-pointer" whileHover={{ scale: 1.2 }} />
+              <motion.span className="w-3 h-3 bg-yellow-500 rounded-full cursor-pointer" whileHover={{ scale: 1.2 }} />
+              <motion.span className="w-3 h-3 bg-green-500 rounded-full cursor-pointer" whileHover={{ scale: 1.2 }} />
+            </div>
+            <div className="flex-1 h-6 bg-white/10 rounded-lg relative overflow-hidden mx-3">
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20"
+                animate={{ x: ["-100%", "100%"] }}
+                transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+              />
+              <span className="absolute inset-0 flex items-center justify-center text-xs text-white/70 font-medium">
+                micheldev.websites
+              </span>
+            </div>
           </div>
-          {/* Content placeholder */}
-          <div className="mb-2 h-4 bg-white/20 rounded-full w-5/6"></div>
-          <div className="mb-4 h-4 bg-white/20 rounded-full w-4/6"></div>
-          <div className="h-8 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full w-3/5"></div>
-          {/* Animated glass circles */}
+
+          {/* Enhanced content */}
+          <div className="space-y-4">
+            {/* Hero section mockup */}
+            <div className="h-20 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-xl p-3 border border-white/10">
+              <div className="h-3 bg-white/20 rounded-full w-3/4 mb-2"></div>
+              <div className="h-2 bg-white/15 rounded-full w-1/2"></div>
+            </div>
+
+            {/* Cards grid */}
+            <div className="grid grid-cols-3 gap-3">
+              {[0, 1, 2].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="h-16 bg-white/5 backdrop-blur-md border border-white/10 rounded-lg relative overflow-hidden"
+                  whileHover={{
+                    scale: 1.05,
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                    y: -2,
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10"
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                  />
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Content lines */}
+            <div className="space-y-3 px-2">
+              {[0.8, 0.6, 0.4].map((width, i) => (
+                <motion.div
+                  key={i}
+                  className="h-2 bg-white/10 rounded-full"
+                  style={{ width: `${width * 100}%` }}
+                  animate={{ opacity: [0.3, 0.7, 0.3] }}
+                  transition={{ duration: 2, delay: i * 0.5, repeat: Number.POSITIVE_INFINITY }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Floating elements */}
           <motion.div
-            className="absolute top-2 right-2 w-10 h-10 bg-purple-500 opacity-25 rounded-full"
-            animate={{ scale: [1, 1.2, 1], x: [0, -10, 0], y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut' }}
+            className="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-indigo-500/30 to-purple-500/30 rounded-full backdrop-blur-sm border border-white/20"
+            animate={{
+              rotate: 360,
+              scale: [1, 1.1, 1],
+            }}
+            transition={{
+              rotate: { duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+              scale: { duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
+            }}
           />
+
           <motion.div
-            className="absolute bottom-4 left-4 w-6 h-6 bg-indigo-500 opacity-20 rounded-full"
-            animate={{ scale: [1, 1.1, 1], x: [0, 15, 0], y: [0, -15, 0] }}
-            transition={{ repeat: Infinity, duration: 10, ease: 'easeInOut' }}
+            className="absolute bottom-6 left-4 w-8 h-8 bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-full backdrop-blur-sm border border-white/20"
+            animate={{
+              y: [0, -10, 0],
+              x: [0, 5, 0],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{ duration: 6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
           />
-        </div>
+
+          {/* Glow effect */}
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-indigo-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </motion.div>
       </motion.div>
     </motion.section>
-  );
+  )
 }
