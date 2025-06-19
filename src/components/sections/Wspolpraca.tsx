@@ -279,91 +279,75 @@ export default function Wspolpraca() {
                     index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
                   }`}
                 >
-                {/* Karta kroku */}
+                {/* Minimalistyczna karta kroku */}
                 <motion.div
                   className="flex-1 group relative"
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                 >
-                  <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/20 dark:border-gray-700/20 rounded-2xl p-6 md:p-8 shadow-xl overflow-hidden">
-                    {/* Gradient overlay na hover */}
-                    <motion.div
-                      className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-                    />
+                  <div className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 shadow-sm hover:shadow-lg transition-all duration-300">
                     
-                    <div className="relative z-10">
-                      {/* Header karty */}
-                      <div className="flex items-start gap-4 mb-6">
-                        <motion.div
-                          variants={iconVariants}
-                          className={`relative p-3 rounded-xl bg-gradient-to-br ${step.color} shadow-lg`}
-                          whileHover={{ 
-                            scale: 1.1,
-                            rotate: 5
-                          }}
-                        >
-                          <step.icon className="w-6 h-6 text-white" />
-                          
-                          {/* Animowany pierścień wokół ikony */}
-                          <motion.div
-                            className="absolute inset-0 rounded-xl border-2 border-white/30"
-                            animate={{
-                              scale: [1, 1.2, 1],
-                              opacity: [0.3, 0.6, 0.3]
-                            }}
-                            transition={{
-                              duration: 2,
-                              repeat: Infinity,
-                              ease: "easeInOut"
-                            }}
-                          />
-                        </motion.div>
-                        
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-r ${step.color} text-white text-sm font-bold`}>
-                              {step.id}
-                            </span>
-                          </div>
-                          <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-3">
-                            {step.title}
-                          </h3>
-                          <p className="text-gray-600 dark:text-gray-400 mb-6">
-                            {step.description}
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Lista szczegółów */}
-                      <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        variants={{
-                          hidden: {},
-                          visible: { transition: { staggerChildren: 0.1 } }
-                        }}
-                        className="space-y-3"
-                      >
-                        {step.details.map((detail, detailIndex) => (
-                          <motion.div
-                            key={detailIndex}
-                            variants={{
-                              hidden: { opacity: 0, x: -20 },
-                              visible: { opacity: 1, x: 0 }
-                            }}
-                            className="flex items-center gap-3 group/item"
-                          >
-                            <motion.div
-                              whileHover={{ scale: 1.2, rotate: 360 }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                            </motion.div>
-                            <span className="text-gray-700 dark:text-gray-300 group-hover/item:text-gray-900 dark:group-hover/item:text-white transition-colors">
-                              {detail}
-                            </span>
-                          </motion.div>
-                        ))}
-                      </motion.div>
+                    {/* Subtelny akcent kolorystyczny */}
+                    <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b ${step.color} rounded-l-xl`} />
+                    
+                    {/* Numer kroku */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Krok {step.id}
+                      </span>
+                      <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
                     </div>
+
+                    {/* Header karty */}
+                    <div className="flex items-start gap-6 mb-6">
+                      {/* Minimalistyczna ikona */}
+                      <motion.div
+                        variants={iconVariants}
+                        className="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center group-hover:bg-gray-100 dark:group-hover:bg-gray-700 transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        <step.icon className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                      </motion.div>
+                      
+                      <div className="flex-1">
+                        {/* Tytuł */}
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                          {step.title}
+                        </h3>
+                        
+                        {/* Opis */}
+                        <p className="text-gray-600 dark:text-gray-400 mb-6">
+                          {step.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Lista szczegółów */}
+                    <motion.div
+                      initial="hidden"
+                      whileInView="visible"
+                      variants={{
+                        hidden: {},
+                        visible: { transition: { staggerChildren: 0.1 } }
+                      }}
+                      className="space-y-3"
+                    >
+                      {step.details.map((detail, detailIndex) => (
+                        <motion.div
+                          key={detailIndex}
+                          variants={{
+                            hidden: { opacity: 0, x: -20 },
+                            visible: { opacity: 1, x: 0 }
+                          }}
+                          className="flex items-center gap-3"
+                        >
+                          <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-500 rounded-full flex-shrink-0" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
+                            {detail}
+                          </span>
+                        </motion.div>
+                      ))}
+                    </motion.div>
                   </div>
                 </motion.div>
 

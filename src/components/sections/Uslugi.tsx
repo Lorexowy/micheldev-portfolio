@@ -1,12 +1,8 @@
 // src/components/sections/Uslugi.tsx
-import dynamic from "next/dynamic"
 import React from "react"
 import { motion, useMotionValue, useMotionTemplate } from "framer-motion"
+import { Paintbrush, Laptop, CheckCircle } from "lucide-react"
 import AnimatedBackground from "@/components/ui/AnimatedBackground"
-
-const Paintbrush = dynamic(() => import("lucide-react").then(mod => mod.Paintbrush))
-const Laptop = dynamic(() => import("lucide-react").then(mod => mod.Laptop))
-const CheckCircle = dynamic(() => import("lucide-react").then(mod => mod.CheckCircle))
 
 interface ServiceCardProps {
   icon: React.ComponentType<{ className?: string }>
