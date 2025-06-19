@@ -1,7 +1,7 @@
 "use client"
 
 import { Inter } from "next/font/google"
-import { motion, AnimatePresence, type Variants, useScroll, useTransform } from "framer-motion"
+import { motion, type Variants, useScroll, useTransform } from "framer-motion"
 import { useEffect, useState } from "react"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
@@ -30,14 +30,6 @@ export default function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   const words = ["wizualne", "graficzne", "mobilne", "cyfrowe", "internetowe", "komercyjne", "UX/UI"];
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % words.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -50,6 +42,32 @@ export default function Hero() {
     window.addEventListener("mousemove", handleMouseMove)
     return () => window.removeEventListener("mousemove", handleMouseMove)
   }, [])
+
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [wordIndex, setWordIndex] = useState(0);
+
+  useEffect(() => {
+    const current = words[wordIndex];
+    let timeout: NodeJS.Timeout;
+    if (!isDeleting) {
+      timeout = setTimeout(() => {
+        setDisplayText(current.substring(0, displayText.length + 1));
+        if (displayText.length + 1 === current.length) {
+          setTimeout(() => setIsDeleting(true), 1000);
+        }
+      }, 150);
+    } else {
+      timeout = setTimeout(() => {
+        setDisplayText(current.substring(0, displayText.length - 1));
+        if (displayText === "") {
+          setIsDeleting(false);
+          setWordIndex((wordIndex + 1) % words.length);
+        }
+      }, 100);
+    }
+    return () => clearTimeout(timeout);
+  }, [displayText, isDeleting, wordIndex, words]);
 
   return (
     <motion.section
@@ -124,28 +142,13 @@ export default function Hero() {
         <motion.div className="mb-6 md:mb-8" variants={item}>
           <h1 className="text-4xl sm:text-5xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white leading-tight sm:leading-tight md:leading-tight lg:leading-tight">
             Tworzę projekty{" "}
-            <span className="inline-block w-[12ch] relative">
-            <AnimatePresence mode="wait">
+            <span className="inline-block min-w-[12ch] text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-[length:200%_200%]">
+              {displayText}
               <motion.span
-                key={currentIndex}
-                className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-[length:200%_200%]"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1, backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-                exit={{ opacity: 0 }}
-                transition={{
-                  opacity: { duration: 0.5 },
-                  backgroundPosition: { duration: 5, repeat: Infinity, ease: "linear" }
-                }}
-                whileHover={{ scale: 1.05 }}
-              >
-                {words[currentIndex]}
-                <motion.div
-                  className="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-lg blur-lg"
-                  animate={{ opacity: [0, 0.5, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-              </motion.span>
-            </AnimatePresence>
+                style={{ borderRight: "2px solid white" }}
+                animate={{ opacity: [0, 1, 0] }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              />
             </span>
           </h1>
         </motion.div>
