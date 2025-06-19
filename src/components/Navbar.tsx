@@ -18,7 +18,6 @@ const links: NavLink[] = [
   { href: "#", label: "", Icon: Home, ariaLabel: "Strona główna" }, 
   { href: "#uslugi", label: "Usługi", Icon: LayoutGrid, ariaLabel: "Usługi" },
   { href: "#projekty", label: "Projekty", Icon: ImageIcon, ariaLabel: "Projekty" },
-  { href: "#o-mnie", label: "O mnie", Icon: User, ariaLabel: "O mnie" },
   { href: "#wspolpraca", label: "Proces", Icon: FileText, ariaLabel: "Proces współpracy" },
   { href: "#kontakt", label: "Kontakt", Icon: Mail, ariaLabel: "Kontakt" },
 ]
