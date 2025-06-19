@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'MichelDev | Portfolio',
-  description: 'Portfolio front-end developera i projektanta graficznego.',
+  descripation: 'Portfolio front-end developera i projektanta graficznego.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
