@@ -82,7 +82,31 @@ export default function Hero() {
         style={{ y: y2 }}
       />
 
+
+      
       <motion.div className="relative z-10 w-full lg:w-1/2 max-w-2xl text-center lg:text-left order-1 lg:order-1">
+
+        <motion.div className="mb-6 md:mb-8" variants={item}>
+          <h1 className="text-6xl sm:text-5xl md:text-4xl lg:text-5xl xl:text-8xl font-extrabold text-white leading-tight sm:leading-tight md:leading-tight lg:leading-tight">
+            Michel
+            <motion.span
+              className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-blue-400 to-indigo-400 bg-[length:200%_200%]"
+              animate={{
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+              }}
+              transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+              whileHover={{ scale: 1.05 }}
+            >
+              Dev
+              <motion.div
+                className="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-lg blur-lg"
+                animate={{ opacity: [0, 0.5, 0] }}
+                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+              />
+            </motion.span>
+          </h1>
+        </motion.div>
+
         <motion.div className="mb-6 md:mb-8" variants={item}>
           <h1 className="text-4xl sm:text-5xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white leading-tight sm:leading-tight md:leading-tight lg:leading-tight">
             Tworzę wyjątkowe projekty{" "}
