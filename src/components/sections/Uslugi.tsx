@@ -8,7 +8,14 @@ const Paintbrush = dynamic(() => import("lucide-react").then(mod => mod.Paintbru
 const Laptop = dynamic(() => import("lucide-react").then(mod => mod.Laptop))
 const CheckCircle = dynamic(() => import("lucide-react").then(mod => mod.CheckCircle))
 
-function ServiceCard({ icon: Icon, title, description, index }: { icon: React.ComponentType<any>, title: string, description: string, index: number }) {
+interface ServiceCardProps {
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+  description: string
+  index: number
+}
+
+function ServiceCard({ icon: Icon, title, description, index }: ServiceCardProps) {
   const pointerX = useMotionValue(-100)
   const pointerY = useMotionValue(-100)
   const highlight = useMotionTemplate`radial-gradient(circle at ${pointerX}px ${pointerY}px, rgba(255,255,255,0.2), transparent 80%)`

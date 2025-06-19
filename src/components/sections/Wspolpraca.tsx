@@ -117,18 +117,6 @@ const iconVariants: Variants = {
   }
 }
 
-const progressVariants: Variants = {
-  hidden: { scaleX: 0 },
-  visible: { 
-    scaleX: 1,
-    transition: {
-      duration: 1,
-      ease: "easeInOut",
-      delay: 0.5
-    }
-  }
-}
-
 export default function Wspolpraca() {
   const containerRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
@@ -148,11 +136,13 @@ export default function Wspolpraca() {
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -50])
   const y2 = useTransform(scrollYProgress, [0, 1], [0, -100])
 
-  // Funkcja sprawdzająca czy kropka dotarła do danego punktu
-  const getStepProgress = (stepIndex: number) => {
-    const stepPosition = (stepIndex + 1) / steps.length
-    return useTransform(lineProgress, [stepPosition - 0.05, stepPosition], [0, 1])
-  }
+  // Stwórz wszystkie stepProgress na raz
+  const stepProgress0 = useTransform(lineProgress, [0.2, 0.25], [0, 1])
+  const stepProgress1 = useTransform(lineProgress, [0.45, 0.5], [0, 1])
+  const stepProgress2 = useTransform(lineProgress, [0.7, 0.75], [0, 1])
+  const stepProgress3 = useTransform(lineProgress, [0.95, 1], [0, 1])
+  
+  const stepProgressArray = [stepProgress0, stepProgress1, stepProgress2, stepProgress3]
 
   return (
     <AnimatedBackground
@@ -249,7 +239,7 @@ export default function Wspolpraca() {
           {/* Kroki procesu */}
           <div className="space-y-12 lg:space-y-24">
             {steps.map((step, index) => {
-              const stepProgress = getStepProgress(index)
+              const stepProgress = stepProgressArray[index]
               
               return (
                 <motion.div

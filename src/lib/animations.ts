@@ -53,8 +53,8 @@ export const sectionVariants: Variants = {
 
 // Warianty dla nawigacji mobilnej
 export const mobileMenuOverlayVariants: Variants = {
-  hidden: { opacity: 0, pointerEvents: "none" as any },
-  visible: { opacity: 1, pointerEvents: "auto" as any, transition: { duration: 0.3 } },
+  hidden: { opacity: 0, pointerEvents: "none" as const },
+  visible: { opacity: 1, pointerEvents: "auto" as const, transition: { duration: 0.3 } },
 }
 
 export const mobileMenuPanelVariants: Variants = {

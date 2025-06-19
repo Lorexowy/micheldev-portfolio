@@ -3,14 +3,14 @@
 
 import { Inter } from "next/font/google"
 import { motion } from "framer-motion"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import AnimatedBackground from "@/components/ui/AnimatedBackground"
 import { containerVariants, itemVariants } from "@/lib/animations"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
 export default function Hero() {
-  const words = ["wizualne", "graficzne", "mobilne", "cyfrowe", "internetowe", "komercyjne", "UX/UI"];
+  const words = useMemo(() => ["wizualne", "graficzne", "mobilne", "cyfrowe", "internetowe", "komercyjne", "UX/UI"], []);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
