@@ -3,7 +3,7 @@
 
 import React, { useRef } from "react"
 import { motion, useScroll, useTransform, useInView, Variants } from "framer-motion"
-import { MessageCircle, Calculator, Wrench, Rocket, CheckCircle, ArrowRight } from "lucide-react"
+import { MessageCircle, Calculator, Wrench, Rocket, ArrowRight } from "lucide-react"
 import AnimatedBackground from "@/components/ui/AnimatedBackground"
 
 interface Step {
