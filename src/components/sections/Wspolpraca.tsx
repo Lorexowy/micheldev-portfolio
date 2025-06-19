@@ -144,6 +144,32 @@ export default function Wspolpraca() {
   
   const stepProgressArray = [stepProgress0, stepProgress1, stepProgress2, stepProgress3]
 
+  // Przygotuj wszystkie dodatkowe transforms na poziomie komponentu
+  const rippleScale0 = useTransform(stepProgress0, [0.8, 1], [1, 2])
+  const rippleOpacity0 = useTransform(stepProgress0, [0.8, 1], [0.5, 0])
+  const borderScale0 = useTransform(stepProgress0, [0.8, 1], [1, 1.8])
+  const borderOpacity0 = useTransform(stepProgress0, [0.8, 1], [0.8, 0])
+
+  const rippleScale1 = useTransform(stepProgress1, [0.8, 1], [1, 2])
+  const rippleOpacity1 = useTransform(stepProgress1, [0.8, 1], [0.5, 0])
+  const borderScale1 = useTransform(stepProgress1, [0.8, 1], [1, 1.8])
+  const borderOpacity1 = useTransform(stepProgress1, [0.8, 1], [0.8, 0])
+
+  const rippleScale2 = useTransform(stepProgress2, [0.8, 1], [1, 2])
+  const rippleOpacity2 = useTransform(stepProgress2, [0.8, 1], [0.5, 0])
+  const borderScale2 = useTransform(stepProgress2, [0.8, 1], [1, 1.8])
+  const borderOpacity2 = useTransform(stepProgress2, [0.8, 1], [0.8, 0])
+
+  const rippleScale3 = useTransform(stepProgress3, [0.8, 1], [1, 2])
+  const rippleOpacity3 = useTransform(stepProgress3, [0.8, 1], [0.5, 0])
+  const borderScale3 = useTransform(stepProgress3, [0.8, 1], [1, 1.8])
+  const borderOpacity3 = useTransform(stepProgress3, [0.8, 1], [0.8, 0])
+
+  const rippleScaleArray = [rippleScale0, rippleScale1, rippleScale2, rippleScale3]
+  const rippleOpacityArray = [rippleOpacity0, rippleOpacity1, rippleOpacity2, rippleOpacity3]
+  const borderScaleArray = [borderScale0, borderScale1, borderScale2, borderScale3]
+  const borderOpacityArray = [borderOpacity0, borderOpacity1, borderOpacity2, borderOpacity3]
+
   return (
     <AnimatedBackground
       variant="section"
@@ -240,6 +266,10 @@ export default function Wspolpraca() {
           <div className="space-y-12 lg:space-y-24">
             {steps.map((step, index) => {
               const stepProgress = stepProgressArray[index]
+              const rippleScale = rippleScaleArray[index]
+              const rippleOpacity = rippleOpacityArray[index]
+              const borderScale = borderScaleArray[index]
+              const borderOpacity = borderOpacityArray[index]
               
               return (
                 <motion.div
@@ -363,8 +393,8 @@ export default function Wspolpraca() {
                     <motion.div
                       className={`absolute inset-0 rounded-full bg-gradient-to-r ${step.color}`}
                       style={{
-                        scale: useTransform(stepProgress, [0.8, 1], [1, 2]),
-                        opacity: useTransform(stepProgress, [0.8, 1], [0.5, 0])
+                        scale: rippleScale,
+                        opacity: rippleOpacity
                       }}
                     />
                     
@@ -376,8 +406,8 @@ export default function Wspolpraca() {
                                           step.color.includes('purple') ? '147 51 234' :
                                           step.color.includes('green') ? '34 197 94' :
                                           '249 115 22'})`,
-                        scale: useTransform(stepProgress, [0.8, 1], [1, 1.8]),
-                        opacity: useTransform(stepProgress, [0.8, 1], [0.8, 0])
+                        scale: borderScale,
+                        opacity: borderOpacity
                       }}
                     />
                   </motion.div>
