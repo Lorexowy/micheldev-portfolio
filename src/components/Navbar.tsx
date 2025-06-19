@@ -103,7 +103,7 @@ export default function Navbar() {
       {/* Mobile Header (visible on small screens) */}
       <header
         className={`
-          lg:hidden fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-3
+          lg:hidden fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-2
           bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800
           transition-all duration-300 ease-out
           ${scrolled ? "shadow-md" : "shadow-none"}

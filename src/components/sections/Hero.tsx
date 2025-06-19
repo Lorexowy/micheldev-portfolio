@@ -1,7 +1,7 @@
 "use client"
 
 import { Inter } from "next/font/google"
-import { motion, type Variants, useScroll, useTransform } from "framer-motion"
+import { motion, AnimatePresence, type Variants, useScroll, useTransform } from "framer-motion"
 import { useEffect, useState } from "react"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
@@ -28,6 +28,16 @@ export default function Hero() {
   const y1 = useTransform(scrollY, [0, 300], [0, -50])
   const y2 = useTransform(scrollY, [0, 300], [0, -100])
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+
+  const words = ["wizualne", "graficzne", "mobilne", "cyfrowe", "internetowe", "komercyjne", "UX/UI"];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex(prev => (prev + 1) % words.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -86,7 +96,7 @@ export default function Hero() {
       
       <motion.div className="relative z-10 w-full lg:w-1/2 max-w-2xl text-center lg:text-left order-1 lg:order-1">
 
-        <motion.div className="mb-6 md:mb-8" variants={item}>
+        <motion.div className="mb-3 md:mb-1" variants={item}>
           <h1 className="text-6xl sm:text-5xl md:text-4xl lg:text-5xl xl:text-8xl font-extrabold text-white leading-tight sm:leading-tight md:leading-tight lg:leading-tight">
             Michel
             <motion.span
@@ -107,24 +117,36 @@ export default function Hero() {
           </h1>
         </motion.div>
 
+        <motion.div variants={item} className="mb-6 md:mb-8 flex justify-center lg:justify-start">
+          <div className="w-60 h-px bg-white/20" />
+        </motion.div>
+
         <motion.div className="mb-6 md:mb-8" variants={item}>
           <h1 className="text-4xl sm:text-5xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white leading-tight sm:leading-tight md:leading-tight lg:leading-tight">
-            Tworzę wyjątkowe projekty{" "}
-            <motion.span
-              className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-[length:200%_200%]"
-              animate={{
-                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-              }}
-              transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-              whileHover={{ scale: 1.05 }}
-            >
-              wizualne
-              <motion.div
-                className="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-lg blur-lg"
-                animate={{ opacity: [0, 0.5, 0] }}
-                transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-              />
-            </motion.span>
+            Tworzę projekty{" "}
+            <span className="inline-block w-[12ch] relative">
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={currentIndex}
+                className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-[length:200%_200%]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  opacity: { duration: 0.5 },
+                  backgroundPosition: { duration: 5, repeat: Infinity, ease: "linear" }
+                }}
+                whileHover={{ scale: 1.05 }}
+              >
+                {words[currentIndex]}
+                <motion.div
+                  className="absolute -inset-1 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-lg blur-lg"
+                  animate={{ opacity: [0, 0.5, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+              </motion.span>
+            </AnimatePresence>
+            </span>
           </h1>
         </motion.div>
 
