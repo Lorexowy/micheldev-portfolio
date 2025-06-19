@@ -1,67 +1,75 @@
-/* === src/components/Navbar.tsx === */
-'use client';
+"use client"
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import {
-  Home,
-  User,
-  LayoutGrid,
-  FileText,
-  Image as ImageIcon,
-  Sun,
-  Moon,
-} from 'lucide-react';
-import { useTheme } from 'next-themes';
-import { motion, Variants } from 'framer-motion';
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { Home, User, LayoutGrid, FileText, ImageIcon, Sun, Moon, Mail, type LucideIcon } from "lucide-react"
+import { useTheme } from "next-themes"
+import { motion, type Variants } from "framer-motion"
 
-const links = [
-  { href: '#',        label: '',        icon: <Home size={20} /> },
-  { href: '#uslugi',  label: 'Usługi',  icon: <LayoutGrid size={20} /> },
-  { href: '#projekty',label: 'Projekty',icon: <ImageIcon size={20} /> },
-  { href: '#o-mnie',  label: 'O mnie',  icon: <User size={20} /> },
-  { href: '#wspolpraca', label: 'Proces',icon: <FileText size={20} /> },
-  { href: '#kontakt', label: 'Kontakt', icon: <Home size={20} /> },
-];
+// Zmieniono strukturę linków, aby przechowywać referencje do komponentów ikon
+interface NavLink {
+  href: string
+  label: string
+  Icon: LucideIcon // Zamiast JSX, przechowujemy referencję do komponentu ikony
+  ariaLabel?: string // Dodano opcjonalny ariaLabel
+}
+
+const links: NavLink[] = [
+  { href: "#", label: "", Icon: Home, ariaLabel: "Strona główna" }, // Dodano ariaLabel
+  { href: "#uslugi", label: "Usługi", Icon: LayoutGrid, ariaLabel: "Usługi" },
+  { href: "#projekty", label: "Projekty", Icon: ImageIcon, ariaLabel: "Projekty" },
+  { href: "#o-mnie", label: "O mnie", Icon: User, ariaLabel: "O mnie" },
+  { href: "#wspolpraca", label: "Proces", Icon: FileText, ariaLabel: "Proces współpracy" },
+  { href: "#kontakt", label: "Kontakt", Icon: Mail, ariaLabel: "Kontakt" }, // Zmieniono ikonę na Mail
+]
 
 const navVariants: Variants = {
-  hidden:  { y: -50, opacity: 0 },
+  hidden: { y: -50, opacity: 0 },
   visible: {
-    y: 0, opacity: 1,
-    transition: { type: 'spring', stiffness: 300, damping: 30, when: 'beforeChildren', staggerChildren: 0.1 }
-  }
-};
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 300, damping: 30, when: "beforeChildren", staggerChildren: 0.1 },
+  },
+}
 const itemVariants: Variants = {
-  hidden:  { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 20 } }
-};
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 20 } },
+}
 
 export default function Navbar() {
-  const [scrolled, setScrolled]     = useState(false);
-  const [hoveredIdx, setHoveredIdx] = useState<number|null>(null);
-  const { theme, setTheme }         = useTheme();
-  const [mounted, setMounted]       = useState(false);
+  const [scrolled, setScrolled] = useState(false)
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  const [activeHash, setActiveHash] = useState("") // Stan dla aktywnego hasha URL
 
-  // gdy już na kliencie
+  // Gdy już na kliencie
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    setMounted(true)
+    // Ustawienie początkowego aktywnego hasha
+    if (typeof window !== "undefined") {
+      setActiveHash(window.location.hash)
+      const handleHashChange = () => setActiveHash(window.location.hash)
+      window.addEventListener("hashchange", handleHashChange)
+      return () => window.removeEventListener("hashchange", handleHashChange)
+    }
+  }, [])
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener("scroll", onScroll)
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
 
-  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark")
 
   return (
     <>
       {/* gradient w defs */}
-      <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
+      <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true">
         <defs>
           <linearGradient id="nav-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%"   stopColor="#6366F1" />
+            <stop offset="0%" stopColor="#6366F1" />
             <stop offset="100%" stopColor="#EC4899" />
           </linearGradient>
         </defs>
@@ -75,18 +83,21 @@ export default function Navbar() {
       >
         <motion.div
           className={`
-            pointer-events-auto flex items-center gap-4 px-5 py-2 rounded-full max-w-max mx-auto
+            pointer-events-auto flex items-center
+            px-3 py-1.5 sm:px-5 sm:py-2 gap-2 sm:gap-4 rounded-full max-w-max mx-auto
             bg-white/20 dark:bg-black/70
             backdrop-filter backdrop-blur-xl backdrop-saturate-150 backdrop-hue-rotate-10
             transition-all duration-300 ease-out
-            ${scrolled
-              ? 'backdrop-blur-3xl backdrop-saturate-200 backdrop-hue-rotate-15 bg-white/30 dark:bg-black/40 shadow-md'
-              : 'shadow-none'}
+            ${
+              scrolled
+                ? "backdrop-blur-3xl backdrop-saturate-200 backdrop-hue-rotate-15 bg-white/30 dark:bg-black/40 shadow-md"
+                : "shadow-none"
+            }
           `}
         >
           {links.map((link, idx) => {
-            const defaultIcon = React.cloneElement(link.icon, { stroke: '#ffffff' });
-            const hoverIcon   = React.cloneElement(link.icon, { stroke: 'url(#nav-gradient)' });
+            // Sprawdzenie, czy link jest aktywny na podstawie hasha URL
+            const isActive = link.href === activeHash || (link.href === "#" && activeHash === "")
 
             return (
               <motion.div
@@ -98,23 +109,25 @@ export default function Navbar() {
               >
                 <Link
                   href={link.href}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full
+                  className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full
                               text-sm font-medium transition-all duration-200 ease-out
-                              ${idx === 0 ? 'bg-white/25 dark:bg-black/50' : ''}`}
+                              ${isActive ? "bg-white/25 dark:bg-black/50" : ""}`} // Aktywny styl
+                  aria-label={link.ariaLabel || link.label || undefined} // Dodano aria-label
                 >
                   <span
                     className={`flex items-center gap-2 ${
                       hoveredIdx === idx
-                        ? 'text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500'
-                        : 'text-white'
+                        ? "text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500"
+                        : "text-white"
                     }`}
                   >
-                    {hoveredIdx === idx ? hoverIcon : defaultIcon}
+                    {/* Użycie komponentu Icon bezpośrednio z propem color */}
+                    <link.Icon size={20} color={hoveredIdx === idx ? "url(#nav-gradient)" : "#ffffff"} />
                     {link.label && <span className="hidden sm:inline">{link.label}</span>}
                   </span>
                 </Link>
               </motion.div>
-            );
+            )
           })}
 
           {/* Theme toggle */}
@@ -122,29 +135,26 @@ export default function Navbar() {
             variants={itemVariants}
             onMouseEnter={() => setHoveredIdx(links.length)}
             onMouseLeave={() => setHoveredIdx(null)}
-            className="pl-3 border-l border-white/40 dark:border-white/20 rounded-full"
+            className="pl-2 sm:pl-3 border-l border-white/40 dark:border-white/20 rounded-full"
           >
             <button
               onClick={toggleTheme}
-              className="flex items-center p-2 rounded-full transition-all duration-200 ease-out"
+              className="flex items-center p-1.5 sm:p-2 rounded-full transition-all duration-200 ease-out"
+              aria-label="Przełącz motyw" // Dodano aria-label
             >
-              { /* dopiero po mountingu odczytujemy theme */ }
-              {mounted && theme === 'dark' ? (
-                <Sun size={20}
-                     stroke={hoveredIdx === links.length ? 'url(#nav-gradient)' : '#ffffff'}
-                     strokeWidth={2} fill="none" />
-              ) : mounted && theme === 'light' ? (
-                <Moon size={20}
-                      stroke={hoveredIdx === links.length ? 'url(#nav-gradient)' : '#ffffff'}
-                      strokeWidth={2} fill="none" />
+              {/* dopiero po mountingu odczytujemy theme */}
+              {mounted && theme === "dark" ? (
+                <Sun size={20} color={hoveredIdx === links.length ? "url(#nav-gradient)" : "#ffffff"} fill="none" />
+              ) : mounted && theme === "light" ? (
+                <Moon size={20} color={hoveredIdx === links.length ? "url(#nav-gradient)" : "#ffffff"} fill="none" />
               ) : (
                 /* fallback domyślny we SSR: biała Moon */
-                <Moon size={20} stroke="#ffffff" strokeWidth={2} fill="none" />
+                <Moon size={20} color="#ffffff" fill="none" />
               )}
             </button>
           </motion.div>
         </motion.div>
       </motion.nav>
     </>
-  );
+  )
 }

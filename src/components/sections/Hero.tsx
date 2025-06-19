@@ -82,12 +82,9 @@ export default function Hero() {
         style={{ y: y2 }}
       />
 
-      <motion.div
-        variants={item}
-        className="relative z-10 w-full lg:w-1/2 max-w-2xl text-center lg:text-left order-1 lg:order-1"
-      >
+      <motion.div className="relative z-10 w-full lg:w-1/2 max-w-2xl text-center lg:text-left order-1 lg:order-1">
         <motion.div className="mb-6 md:mb-8" variants={item}>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white leading-tight sm:leading-tight md:leading-tight lg:leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-white leading-tight sm:leading-tight md:leading-tight lg:leading-tight">
             Tworzę wyjątkowe projekty{" "}
             <motion.span
               className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-[length:200%_200%]"
@@ -109,24 +106,24 @@ export default function Hero() {
 
         <motion.p
           variants={item}
-          className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 mb-8 md:mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed px-2 sm:px-0"
+          className="text-base sm:text-lg md:text-lg lg:text-xl text-gray-300 mb-8 md:mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed px-2 sm:px-0"
         >
           Specjalizuję się w <span className="text-indigo-400 font-semibold">projektowaniu graficznym</span> i{" "}
           <span className="text-purple-400 font-semibold">tworzeniu stron internetowych</span>. Pomagam markom wyróżnić
-          się poprzez kompleksowe rozwiązania wizualne.
+          się poprzez kompleksowe rozwiązania wizualne. Sprawdź sam i rozpocznijmy współpracę!
         </motion.p>
 
         <motion.div
           variants={item}
-          className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center lg:justify-start items-center px-2 sm:px-0"
+          className="flex flex-col sm:flex-row gap-3 md:gap-6 justify-center lg:justify-start items-center px-2 sm:px-0"
         >
           <motion.a
             href="#projekty"
-            className="group relative w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 bg-white text-gray-900 font-semibold rounded-lg overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl text-center"
+            className="group relative w-full sm:w-auto px-5 md:px-8 py-2.5 md:py-4 bg-white text-gray-900 font-semibold rounded-lg overflow-hidden transition-all duration-300 shadow-lg hover:shadow-xl text-center"
             whileHover={{ scale: 1.02, y: -1 }}
             whileTap={{ scale: 0.98 }}
           >
-            <span className="relative z-10 flex items-center justify-center gap-2 text-sm md:text-base">
+            <span className="relative z-10 flex items-center justify-center gap-2 text-sm">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0l-4-4m4 4l-4 4" />
               </svg>
@@ -142,11 +139,11 @@ export default function Hero() {
 
           <motion.a
             href="#kontakt"
-            className="group relative w-full sm:w-auto px-6 md:px-8 py-3 md:py-4 border border-white/20 text-white font-semibold rounded-lg backdrop-blur-sm bg-white/5 transition-all duration-300 hover:bg-white/10 hover:border-white/30 text-center"
+            className="group relative w-full sm:w-auto px-5 md:px-8 py-2.5 md:py-4 border border-white/20 text-white font-semibold rounded-lg backdrop-blur-sm bg-white/5 transition-all duration-300 hover:bg-white/10 hover:border-white/30 text-center"
             whileHover={{ scale: 1.02, y: -1 }}
             whileTap={{ scale: 0.98 }}
           >
-            <span className="relative z-10 flex items-center justify-center gap-2 text-sm md:text-base">
+            <span className="relative z-10 flex items-center justify-center gap-2 text-sm">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
@@ -170,7 +167,7 @@ export default function Hero() {
       {/* Enhanced mockup preview - optimized for mobile */}
       <motion.div
         variants={item}
-        className="relative z-10 w-full lg:w-1/2 flex justify-center items-center order-2 lg:order-2 mt-8 lg:mt-0"
+        className="relative z-10 w-full lg:w-1/2 hidden lg:flex justify-center items-center order-2 lg:order-2 mt-8 lg:mt-0"
         animate={{
           y: [-5, 5, -5],
         }}
