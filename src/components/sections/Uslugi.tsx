@@ -1,6 +1,8 @@
+// src/components/sections/Uslugi.tsx
 import dynamic from "next/dynamic"
 import React from "react"
 import { motion, useMotionValue, useMotionTemplate } from "framer-motion"
+import AnimatedBackground from "@/components/ui/AnimatedBackground"
 
 const Paintbrush = dynamic(() => import("lucide-react").then(mod => mod.Paintbrush))
 const Laptop = dynamic(() => import("lucide-react").then(mod => mod.Laptop))
@@ -81,15 +83,20 @@ export default function Uslugi() {
   ]
 
   return (
-    <section id="uslugi" className="py-20 px-6 bg-gray-50 dark:bg-gray-950">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-extrabold mb-12 text-center text-gray-900 dark:text-gray-50">Moje Usługi</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-stretch">
-          {services.map((service, index) => (
-            <ServiceCard key={index} icon={service.icon} title={service.title} description={service.description} index={index} />
-          ))}
+    <AnimatedBackground
+      variant="section"
+      className="py-20 px-6 bg-gray-50 dark:bg-gray-950"
+    >
+      <section id="uslugi">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-extrabold mb-12 text-center text-gray-900 dark:text-gray-50">Moje <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-blue-400 to-indigo-400 bg-[length:200%_200%]">Usługi</span></h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-stretch">
+            {services.map((service, index) => (
+              <ServiceCard key={index} icon={service.icon} title={service.title} description={service.description} index={index} />
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </AnimatedBackground>
   )
 }
