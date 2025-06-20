@@ -138,15 +138,16 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                       </p>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-                      <h4 className="font-medium text-gray-900 dark:text-white">Vercel Web Analytics (anonimowe):</h4>
+                      <h4 className="font-medium text-gray-900 dark:text-white">Vercel Web Analytics:</h4>
                       <ul className="list-disc list-inside text-sm space-y-1 mt-2">
-                        <li>Liczba odwiedzin strony (bez identyfikacji osoby)</li>
-                        <li>Dane o wydajności strony</li>
+                        <li>Liczba odwiedzin stron (anonimowe page views)</li>
+                        <li>Metryki wydajności strony (Core Web Vitals)</li>
                         <li>Podstawowe informacje o przeglądarce i urządzeniu</li>
                         <li>Kraj/region odwiedzającego (bez dokładnej lokalizacji)</li>
+                        <li>Źródła ruchu (referrery)</li>
                       </ul>
                       <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
-                        Te dane są całkowicie anonimowe i nie pozwalają na identyfikację osoby
+                        <strong>Analytics są teraz aktywne</strong> - dane są całkowicie anonimowe i zgodne z GDPR
                       </p>
                     </div>
                   </div>
@@ -218,14 +219,20 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                     <div className="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg border border-indigo-200 dark:border-indigo-800">
                       <h4 className="font-medium text-indigo-800 dark:text-indigo-300">📈 Vercel Web Analytics:</h4>
                       <ul className="text-sm text-indigo-700 dark:text-indigo-400 mt-1 space-y-1">
-                        <li>• Anonimowe zbieranie statystyk bez cookies identyfikujących</li>
+                        <li>• Zbieranie statystyk odwiedzin bez cookies identyfikujących</li>
+                        <li>• Analiza wydajności strony (Core Web Vitals)</li>
+                        <li>• Anonimowe dane geograficzne (kraj/region)</li>
+                        <li>• Źródła ruchu i popularne strony</li>
                         <li>• Brak profilowania użytkowników</li>
                         <li>• Zgodne z GDPR bez konieczności wyrażania zgody</li>
                       </ul>
+                      <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-2 font-medium">
+                        Analytics działają od {new Date().toLocaleDateString('pl-PL')}
+                      </p>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg border border-gray-200 dark:border-gray-600">
                       <p className="text-sm text-gray-700 dark:text-gray-300">
-                        <strong>❌ Czego NIE używamy:</strong> Cookies reklamowe, śledzące, marketingowe, 
+                        <strong>Czego NIE używamy:</strong> Cookies reklamowe, śledzące, marketingowe, 
                         social media widgets, Google Analytics, Facebook Pixel
                       </p>
                     </div>
@@ -248,9 +255,13 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                     <div className="bg-teal-50 dark:bg-teal-900/20 p-3 rounded-lg border border-teal-200 dark:border-teal-800">
                       <h4 className="font-medium text-teal-800 dark:text-teal-300">📊 Dane analytics:</h4>
                       <p className="text-sm text-teal-700 dark:text-teal-400 mt-1">
-                        • Przechowywane przez Vercel zgodnie z ich polityką<br/>
-                        • Maksymalnie 24 miesiące (dane anonimowe)<br/>
-                        • Możliwość wyłączenia w każdej chwili
+                        • Przechowywane przez Vercel zgodnie z ich polityką prywatności<br/>
+                        • Maksymalnie <strong>24 miesiące</strong> (dane anonimowe)<br/>
+                        • Automatyczne usuwanie starszych danych<br/>
+                        • Możliwość wyłączenia analytics w ustawieniach Vercel
+                      </p>
+                      <p className="text-xs text-teal-600 dark:text-teal-400 mt-2">
+                        Dane analytics są obecnie zbierane i przetwarzane
                       </p>
                     </div>
                   </div>
