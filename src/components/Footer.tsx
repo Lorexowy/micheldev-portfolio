@@ -157,14 +157,14 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                   </h3>
                   <div className="space-y-3">
                     <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
-                      <h4 className="font-medium text-blue-800 dark:text-blue-300">📧 Formularz kontaktowy:</h4>
+                      <h4 className="font-medium text-blue-800 dark:text-blue-300">Formularz kontaktowy:</h4>
                       <p className="text-sm text-blue-700 dark:text-blue-400 mt-1">
                         <strong>Cel:</strong> Odpowiedź na zapytania i nawiązanie współpracy<br/>
-                        <strong>Podstawa prawna:</strong> Art. 6 ust. 1 lit. f RODO - prowadzenie korespondencji handlowej<br/>
+                        <strong>Podstawa prawna:</strong> Art. 6 ust. 1 lit. a RODO - prowadzenie korespondencji handlowej<br/>
                       </p>
                     </div>
                     <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
-                      <h4 className="font-medium text-green-800 dark:text-green-300">📊 Vercel Web Analytics:</h4>
+                      <h4 className="font-medium text-green-800 dark:text-green-300">Vercel Web Analytics:</h4>
                       <p className="text-sm text-green-700 dark:text-green-400 mt-1">
                         <strong>Cel:</strong> Analiza ruchu, optymalizacja strony i poprawa doświadczeń użytkowników<br/>
                         <strong>Podstawa prawna:</strong> Art. 6 ust. 1 lit. f RODO - analiza funkcjonowania strony
@@ -245,8 +245,7 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                       <h4 className="font-medium text-orange-800 dark:text-orange-300">Dane z formularza kontaktowego:</h4>
                       <p className="text-sm text-orange-700 dark:text-orange-400 mt-1">
                         • Przetwarzane natychmiast przez EmailJS i dostarczane na Gmail<br/>
-                        • Przechowywane w Gmail do czasu zrealizowania zapytania<br/>
-                        • Następnie przez <strong>3 lata</strong> na potrzeby ewentualnych roszczeń<br/>
+                        • Przechowywane w Gmail do czasu zrealizowania zapytania<br/>następnie przez <strong>3 lata</strong> na potrzeby ewentualnych roszczeń<br/>
                         • Możliwość wcześniejszego usunięcia na żądanie<br/>
                         • <strong>EmailJS nie przechowuje danych</strong> - tylko przekazuje emaile
                       </p>
@@ -254,7 +253,7 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                     <div className="bg-teal-50 dark:bg-teal-900/20 p-3 rounded-lg border border-teal-200 dark:border-teal-800">
                       <h4 className="font-medium text-teal-800 dark:text-teal-300">Dane analytics:</h4>
                       <p className="text-sm text-teal-700 dark:text-teal-400 mt-1">
-                        • Przechowywane przez Vercel zgodnie z ich polityką prywatności<br/>
+                        • Przechowywane przez Vercel zgodnie z ich <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-indigo-600 dark:text-indigo-400 hover:underline">polityką prywatności</a><br/>
                         • Maksymalnie <strong>24 miesiące</strong> (dane anonimowe)<br/>
                         • Automatyczne usuwanie starszych danych<br/>
                         • Możliwość wyłączenia analytics w ustawieniach Vercel
