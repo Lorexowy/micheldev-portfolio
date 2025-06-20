@@ -260,6 +260,40 @@ function ContactForm() {
         />
       </motion.div>
 
+      {/* Informacja RODO */}
+      <motion.div
+        variants={itemVariants}
+        className="mb-6 p-4 bg-blue-50/50 dark:bg-blue-900/20 border border-blue-200/30 dark:border-blue-800/30 rounded-lg"
+      >
+        <div className="flex items-start gap-3">
+          <div className="flex-shrink-0 mt-0.5">
+            <div className="w-5 h-5 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
+              <div className="w-2 h-2 bg-blue-600 dark:bg-blue-400 rounded-full"></div>
+            </div>
+          </div>
+          <div className="text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
+            <p>
+              Wysyłając formularz, Twoje dane osobowe będą przetwarzane w celu odpowiedzi na zapytanie 
+              oraz prowadzenia korespondencji handlowej na podstawie prawnie uzasadnionego interesu 
+              (art. 6 ust. 1 lit. f RODO).{" "}
+              <button
+                type="button"
+                onClick={() => {
+                  // Scroll to footer where privacy policy link is
+                  const footer = document.querySelector('footer');
+                  if (footer) {
+                    footer.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="text-blue-700 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-200 underline font-medium"
+              >
+                Szczegóły w Polityce prywatności
+              </button>
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
       <motion.button
         type="submit"
         disabled={isSubmitting}
