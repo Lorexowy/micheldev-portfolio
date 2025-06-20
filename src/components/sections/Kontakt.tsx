@@ -3,6 +3,7 @@
 
 import React, { useState, useRef } from "react"
 import { motion, useInView, Variants, AnimatePresence } from "framer-motion"
+import emailjs from '@emailjs/browser'
 import { 
   Mail, 
   Phone, 
@@ -15,9 +16,21 @@ import {
   Facebook,
   Twitter,
   Linkedin,
-  MessageCircle
+  MessageCircle,
+  CheckCircle,
+  AlertCircle
 } from "lucide-react"
 import AnimatedBackground from "@/components/ui/AnimatedBackground"
+
+// EmailJS configuration
+const EMAILJS_SERVICE_ID = "service_38manau"
+const EMAILJS_TEMPLATE_ID = "template_5bit5fm"  
+const EMAILJS_PUBLIC_KEY = "zacMgwhSoVuiEfIqg"
+
+// Initialize EmailJS (opcjonalne, ale zalecane)
+if (typeof window !== 'undefined') {
+  emailjs.init(EMAILJS_PUBLIC_KEY)
+}
 
 interface FormData {
   name: string
@@ -112,25 +125,55 @@ function ContactForm() {
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+    // Reset status when user starts typing again
+    if (submitStatus !== 'idle') {
+      setSubmitStatus('idle')
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
-    // Symulacja wysyłania
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    // Tutaj będzie logika wysyłania formularza
-    console.log("Form data:", formData)
-    
-    setIsSubmitting(false)
-    // Reset formularza po wysłaniu
-    setFormData({ name: "", email: "", subject: "", message: "" })
+    setSubmitStatus('idle')
+    setErrorMessage('')
+
+    try {
+      // Prepare template parameters for EmailJS
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        to_email: 'mateusz.michel7@gmail.com' // Twój email
+      }
+
+      // Send email using EmailJS
+      const response = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      )
+
+      console.log('Email sent successfully:', response)
+      setSubmitStatus('success')
+      
+      // Reset form after successful submission
+      setFormData({ name: "", email: "", subject: "", message: "" })
+
+    } catch (error) {
+      console.error('Failed to send email:', error)
+      setSubmitStatus('error')
+      setErrorMessage('Wystąpił błąd podczas wysyłania wiadomości. Spróbuj ponownie lub skontaktuj się bezpośrednio: mateusz.michel7@gmail.com')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -222,7 +265,13 @@ function ContactForm() {
         disabled={isSubmitting}
         whileHover={{ scale: 1.02, y: -2 }}
         whileTap={{ scale: 0.98 }}
-        className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className={`w-full font-semibold py-4 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
+          submitStatus === 'success' 
+            ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white' 
+            : submitStatus === 'error'
+            ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white'
+            : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white'
+        }`}
       >
         <AnimatePresence mode="wait">
           {isSubmitting ? (
@@ -235,6 +284,28 @@ function ContactForm() {
             >
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               Wysyłanie...
+            </motion.div>
+          ) : submitStatus === 'success' ? (
+            <motion.div
+              key="success"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex items-center gap-2"
+            >
+              <CheckCircle className="w-5 h-5" />
+              Wiadomość wysłana!
+            </motion.div>
+          ) : submitStatus === 'error' ? (
+            <motion.div
+              key="error"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex items-center gap-2"
+            >
+              <AlertCircle className="w-5 h-5" />
+              Spróbuj ponownie
             </motion.div>
           ) : (
             <motion.div
@@ -250,11 +321,57 @@ function ContactForm() {
           )}
         </AnimatePresence>
       </motion.button>
+
+      {/* Success/Error Messages */}
+      <AnimatePresence>
+        {submitStatus === 'success' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg"
+          >
+            <div className="flex items-center gap-2 text-green-800 dark:text-green-300">
+              <CheckCircle className="w-5 h-5" />
+              <span className="font-medium">Dziękuję za wiadomość!</span>
+            </div>
+            <p className="text-sm text-green-700 dark:text-green-400 mt-1">
+              Odpowiem na Twój email w ciągu 24 godzin.
+            </p>
+          </motion.div>
+        )}
+
+        {submitStatus === 'error' && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
+          >
+            <div className="flex items-center gap-2 text-red-800 dark:text-red-300">
+              <AlertCircle className="w-5 h-5" />
+              <span className="font-medium">Błąd wysyłania</span>
+            </div>
+            <p className="text-sm text-red-700 dark:text-red-400 mt-1">
+              {errorMessage}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.form>
   )
 }
 
 function ContactInfo() {
+  const [currentUrl, setCurrentUrl] = useState('')
+
+  React.useEffect(() => {
+    // Ustawiamy URL dopiero po załadowaniu komponentu na kliencie
+    if (typeof window !== 'undefined') {
+      setCurrentUrl(window.location.href)
+    }
+  }, [])
+
   const contactItems = [
     {
       icon: Mail,
@@ -338,10 +455,10 @@ function ContactInfo() {
           {socialShareLinks.map((social, index) => (
             <motion.a
               key={index}
-              href={`${social.url}${encodeURIComponent(typeof window !== 'undefined' ? window.location.href : 'https://micheldev.pl')}`}
+              href={currentUrl ? `${social.url}${encodeURIComponent(currentUrl)}` : '#'}
               target="_blank"
               rel="noopener noreferrer"
-              className={`flex items-center gap-3 p-3 bg-white/30 dark:bg-gray-900/30 rounded-lg hover:bg-white/40 dark:hover:bg-gray-900/40 transition-all duration-300 ${social.color}`}
+              className={`flex items-center gap-3 p-3 bg-white/30 dark:bg-gray-900/30 rounded-lg hover:bg-white/40 dark:hover:bg-gray-900/40 transition-all duration-300 ${social.color} ${!currentUrl ? 'opacity-50 pointer-events-none' : ''}`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
