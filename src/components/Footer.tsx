@@ -159,7 +159,7 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                       <h4 className="font-medium text-blue-800 dark:text-blue-300">Formularz kontaktowy:</h4>
                       <p className="text-sm text-blue-700 dark:text-blue-400 mt-1">
                         <strong>Cel:</strong> Odpowiedź na zapytania i nawiązanie współpracy<br/>
-                        <strong>Podstawa prawna:</strong> Art. 6 ust. 1 lit. f RODO - prawnie uzasadniony interes w zakresie prowadzenia korespondencji handlowej<br/>
+                        <strong>Podstawa prawna:</strong> Art. 6 ust. 1 lit. a RODO - zgoda<br/>
                       </p>
                     </div>
                     <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
