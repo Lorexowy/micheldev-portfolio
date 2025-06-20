@@ -260,22 +260,23 @@ function ContactForm() {
         />
       </motion.div>
 
-      {/* Informacja RODO */}
+      {/* Checkbox zgody na przetwarzanie danych */}
       <motion.div
         variants={itemVariants}
-        className="mb-6 p-4 bg-blue-50/50 dark:bg-blue-900/20 border border-blue-200/30 dark:border-blue-800/30 rounded-lg"
+        className="mb-6"
       >
-        <div className="flex items-start gap-3">
-          <div className="flex-shrink-0 mt-0.5">
-            <div className="w-5 h-5 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
-              <div className="w-2 h-2 bg-blue-600 dark:bg-blue-400 rounded-full"></div>
-            </div>
-          </div>
-          <div className="text-sm text-blue-800 dark:text-blue-300 leading-relaxed">
+        <label className="flex items-start gap-3 cursor-pointer group">
+          <input
+            type="checkbox"
+            name="dataConsent"
+            required
+            className="mt-1 w-4 h-4 text-indigo-600 bg-white dark:bg-gray-900 border-2 border-gray-300 dark:border-gray-600 rounded focus:ring-indigo-500 focus:ring-2 transition-all duration-200 accent-indigo-600"
+          />
+          <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
             <p>
-              Wysyłając formularz, Twoje dane osobowe będą przetwarzane w celu odpowiedzi na zapytanie 
-              oraz prowadzenia korespondencji handlowej na podstawie prawnie uzasadnionego interesu 
-              (art. 6 ust. 1 lit. f RODO).{" "}
+              Wysyłając formularz wyrażasz zgodę na przetwarzanie podanych danych osobowych (imię i nazwisko, adres e-mail, temat i treść wiadomości){" "}
+              przez <strong>MichelDev</strong> w celu odpowiedzi na zapytanie oraz prowadzenia korespondencji handlowej.
+              Zgoda jest dobrowolna i może zostać cofnięta w każdym czasie.{" "}
               <button
                 type="button"
                 onClick={() => {
@@ -285,13 +286,13 @@ function ContactForm() {
                     footer.scrollIntoView({ behavior: 'smooth' });
                   }
                 }}
-                className="text-blue-700 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-200 underline font-medium"
+                className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 underline font-medium"
               >
                 Szczegóły w Polityce prywatności
-              </button>
+              </button>*
             </p>
           </div>
-        </div>
+        </label>
       </motion.div>
 
       <motion.button
