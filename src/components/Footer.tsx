@@ -133,9 +133,6 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                         <li>Temat wiadomości</li>
                         <li>Treść wiadomości</li>
                       </ul>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
-                        Dane z formularza będą przetwarzane po wdrożeniu funkcjonalności wysyłania
-                      </p>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
                       <h4 className="font-medium text-gray-900 dark:text-white">Vercel Web Analytics:</h4>
@@ -163,14 +160,14 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                       <h4 className="font-medium text-blue-800 dark:text-blue-300">📧 Formularz kontaktowy:</h4>
                       <p className="text-sm text-blue-700 dark:text-blue-400 mt-1">
                         <strong>Cel:</strong> Odpowiedź na zapytania i nawiązanie współpracy<br/>
-                        <strong>Podstawa prawna:</strong> Art. 6 ust. 1 lit. f RODO (uzasadniony interes) - prowadzenie korespondencji handlowej
+                        <strong>Podstawa prawna:</strong> Art. 6 ust. 1 lit. f RODO - prowadzenie korespondencji handlowej<br/>
                       </p>
                     </div>
                     <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
                       <h4 className="font-medium text-green-800 dark:text-green-300">📊 Vercel Web Analytics:</h4>
                       <p className="text-sm text-green-700 dark:text-green-400 mt-1">
                         <strong>Cel:</strong> Analiza ruchu, optymalizacja strony i poprawa doświadczeń użytkowników<br/>
-                        <strong>Podstawa prawna:</strong> Art. 6 ust. 1 lit. f RODO (uzasadniony interes) - analiza funkcjonowania strony
+                        <strong>Podstawa prawna:</strong> Art. 6 ust. 1 lit. f RODO - analiza funkcjonowania strony
                       </p>
                     </div>
                   </div>
@@ -207,9 +204,9 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                   </h3>
                   <div className="space-y-3">
                     <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-lg border border-purple-200 dark:border-purple-800">
-                      <h4 className="font-medium text-purple-800 dark:text-purple-300">🍪 Cookies funkcjonalne (lokalne):</h4>
+                      <h4 className="font-medium text-purple-800 dark:text-purple-300">Cookies funkcjonalne:</h4>
                       <ul className="text-sm text-purple-700 dark:text-purple-400 mt-1 space-y-1">
-                        <li>• Przechowowanie preferencji motywu (jasny/ciemny tryb)</li>
+                        <li>• Przechowowanie preferencji motywu</li>
                         <li>• Podstawowe funkcjonowanie strony</li>
                       </ul>
                       <p className="text-xs text-purple-600 dark:text-purple-400 mt-2">
@@ -217,7 +214,7 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                       </p>
                     </div>
                     <div className="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-lg border border-indigo-200 dark:border-indigo-800">
-                      <h4 className="font-medium text-indigo-800 dark:text-indigo-300">📈 Vercel Web Analytics:</h4>
+                      <h4 className="font-medium text-indigo-800 dark:text-indigo-300">Vercel Web Analytics:</h4>
                       <ul className="text-sm text-indigo-700 dark:text-indigo-400 mt-1 space-y-1">
                         <li>• Zbieranie statystyk odwiedzin bez cookies identyfikujących</li>
                         <li>• Analiza wydajności strony (Core Web Vitals)</li>
@@ -245,15 +242,17 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                   </h3>
                   <div className="space-y-3">
                     <div className="bg-orange-50 dark:bg-orange-900/20 p-3 rounded-lg border border-orange-200 dark:border-orange-800">
-                      <h4 className="font-medium text-orange-800 dark:text-orange-300">📧 Dane z formularza kontaktowego:</h4>
+                      <h4 className="font-medium text-orange-800 dark:text-orange-300">Dane z formularza kontaktowego:</h4>
                       <p className="text-sm text-orange-700 dark:text-orange-400 mt-1">
-                        • Do czasu zrealizowania zapytania/zakończenia korespondencji<br/>
+                        • Przetwarzane natychmiast przez EmailJS i dostarczane na Gmail<br/>
+                        • Przechowywane w Gmail do czasu zrealizowania zapytania<br/>
                         • Następnie przez <strong>3 lata</strong> na potrzeby ewentualnych roszczeń<br/>
-                        • Możliwość wcześniejszego usunięcia na żądanie
+                        • Możliwość wcześniejszego usunięcia na żądanie<br/>
+                        • <strong>EmailJS nie przechowuje danych</strong> - tylko przekazuje emaile
                       </p>
                     </div>
                     <div className="bg-teal-50 dark:bg-teal-900/20 p-3 rounded-lg border border-teal-200 dark:border-teal-800">
-                      <h4 className="font-medium text-teal-800 dark:text-teal-300">📊 Dane analytics:</h4>
+                      <h4 className="font-medium text-teal-800 dark:text-teal-300">Dane analytics:</h4>
                       <p className="text-sm text-teal-700 dark:text-teal-400 mt-1">
                         • Przechowywane przez Vercel zgodnie z ich polityką prywatności<br/>
                         • Maksymalnie <strong>24 miesiące</strong> (dane anonimowe)<br/>
@@ -268,7 +267,7 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
                 </section>
 
                 <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 p-4 rounded-lg border border-indigo-200 dark:border-indigo-700">
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">📞 Kontakt w sprawach RODO:</h4>
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Kontakt w sprawach RODO:</h4>
                   <p className="text-sm text-center">
                     <strong>Mateusz Michel</strong><br/>
                     Email: <a href="mailto:mateusz.michel7@gmail.com" className="text-indigo-600 dark:text-indigo-400 hover:underline">
