@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { Home, LayoutGrid, FileText, ImageIcon, Sun, Moon, Mail, Menu, X, type LucideIcon } from "lucide-react"
+import { Home, LayoutGrid, ImageIcon, Sun, Moon, Mail, Menu, X, type LucideIcon } from "lucide-react"
 import { useTheme } from "next-themes"
 import { motion, type Variants } from "framer-motion"
 
