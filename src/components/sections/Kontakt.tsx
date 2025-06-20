@@ -55,7 +55,7 @@ const faqData: FAQItem[] = [
   },
   {
     question: "Jakie są koszty realizacji strony internetowej?",
-    answer: "Ceny zależą od zakresu projektu. Proste strony zaczynają się od 2000 zł, bardziej zaawansowane projekty e-commerce czy aplikacje webowe to koszt od 5000 zł wzwyż. Każda wycena jest indywidualna i transparentna."
+    answer: "Ceny zależą od zakresu projektu. Proste strony zaczynają się od 1000 zł, bardziej zaawansowane projekty e-commerce czy aplikacje webowe to koszt od 5000 zł wzwyż. Każda wycena jest indywidualna i transparentna."
   },
   {
     question: "Czy projektujesz strony responsywne?",
