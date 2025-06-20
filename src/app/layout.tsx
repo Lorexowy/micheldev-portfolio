@@ -8,8 +8,8 @@ import Footer from '@/components/Footer';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'MichelDev | Portfolio',
-  descripation: 'Portfolio front-end developera i projektanta graficznego.',
+  title: 'MichelDev | Projektowanie stron & grafiki komputerowej',
+  descripation: 'MichelDev | Projektowanie stron internetowych i grafiki komputerowej.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
