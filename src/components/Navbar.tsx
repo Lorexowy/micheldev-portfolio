@@ -1,24 +1,22 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Link from "next/link"
 import { Home, LayoutGrid, ImageIcon, Sun, Moon, Mail, Menu, X, type LucideIcon } from "lucide-react"
 import { useTheme } from "next-themes"
 import { motion, type Variants } from "framer-motion"
 
-
 interface NavLink {
-  href: string
+  targetId: string // ID sekcji do scrollowania
   label: string
   Icon: LucideIcon 
   ariaLabel?: string 
 }
 
 const links: NavLink[] = [
-  { href: "#", label: "", Icon: Home, ariaLabel: "Strona główna" }, 
-  { href: "#uslugi", label: "Usługi", Icon: LayoutGrid, ariaLabel: "Usługi" },
-  { href: "#projekty", label: "Projekty", Icon: ImageIcon, ariaLabel: "Projekty" },
-  { href: "#kontakt", label: "Kontakt", Icon: Mail, ariaLabel: "Kontakt" },
+  { targetId: "hero", label: "", Icon: Home, ariaLabel: "Strona główna" }, 
+  { targetId: "uslugi", label: "Usługi", Icon: LayoutGrid, ariaLabel: "Usługi" },
+  { targetId: "projekty", label: "Projekty", Icon: ImageIcon, ariaLabel: "Projekty" },
+  { targetId: "kontakt", label: "Kontakt", Icon: Mail, ariaLabel: "Kontakt" },
 ]
 
 const navVariants: Variants = {
@@ -29,17 +27,16 @@ const navVariants: Variants = {
     transition: { type: "spring", stiffness: 300, damping: 30, when: "beforeChildren", staggerChildren: 0.1 },
   },
 }
+
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 10 },
   visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 20 } },
 }
 
-
 const mobileMenuOverlayVariants: Variants = {
   hidden: { opacity: 0, pointerEvents: "none" },
   visible: { opacity: 1, pointerEvents: "auto", transition: { duration: 0.3 } },
 }
-
 
 const mobileMenuPanelVariants: Variants = {
   hidden: { x: "100%" },
@@ -51,19 +48,11 @@ export default function Navbar() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
-  const [activeHash, setActiveHash] = useState("") 
+  const [activeSection, setActiveSection] = useState("hero") 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false) 
-
 
   useEffect(() => {
     setMounted(true)
-
-    if (typeof window !== "undefined") {
-      setActiveHash(window.location.hash)
-      const handleHashChange = () => setActiveHash(window.location.hash)
-      window.addEventListener("hashchange", handleHashChange)
-      return () => window.removeEventListener("hashchange", handleHashChange)
-    }
   }, [])
 
   useEffect(() => {
@@ -72,6 +61,88 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
+  // Funkcja do smooth scrollowania bez zmiany URL
+  const scrollToSection = (targetId: string) => {
+    // Dla home scrollujemy na górę strony
+    if (targetId === "hero") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      })
+      setActiveSection("hero")
+      return
+    }
+
+    // Dla innych sekcji szukamy elementu po ID
+    const element = document.getElementById(targetId)
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest"
+      })
+      setActiveSection(targetId)
+    }
+  }
+
+  // Automatyczne wykrywanie aktywnej sekcji podczas scrollowania
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["hero", "uslugi", "projekty", "kontakt"]
+      const scrollPosition = window.scrollY + 150 // offset dla lepszego wykrywania
+
+      // Sprawdź czy jesteśmy na górze strony
+      if (window.scrollY < 100) {
+        setActiveSection("hero")
+        return
+      }
+
+      // Sprawdź którą sekcję aktualnie widzimy
+      let foundActiveSection = false
+      
+      for (const sectionId of sections.slice(1)) { // pomijamy hero, bo jest na górze
+        const element = document.getElementById(sectionId)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          const elementTop = window.scrollY + rect.top
+          const elementBottom = elementTop + element.offsetHeight
+          
+          if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
+            setActiveSection(sectionId)
+            foundActiveSection = true
+            break
+          }
+        }
+      }
+
+      // Jeśli nie znaleźliśmy żadnej aktywnej sekcji i nie jesteśmy na górze, 
+      // sprawdź czy może jesteśmy między sekcjami - wtedy ustaw hero
+      if (!foundActiveSection && window.scrollY >= 100) {
+        setActiveSection("hero")
+      }
+    }
+
+    // Wywołaj handleScroll od razu po załadowaniu, żeby ustawić poprawną sekcję
+    handleScroll()
+    
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  // Dodatkowy useEffect do resetowania aktywnej sekcji przy ładowaniu strony
+  useEffect(() => {
+    // Po załadowaniu komponentu sprawdź pozycję scrollowania
+    const checkInitialPosition = () => {
+      if (window.scrollY < 100) {
+        setActiveSection("hero")
+      }
+    }
+
+    // Sprawdź pozycję po krótkim opóźnieniu (żeby DOM się załadował)
+    const timer = setTimeout(checkInitialPosition, 100)
+    
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -107,14 +178,14 @@ export default function Navbar() {
           ${scrolled ? "shadow-md" : "shadow-none"}
         `}
       >
-        <Link
-          href="#"
+        <button
+          onClick={() => scrollToSection("hero")}
           className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white"
           aria-label="Strona główna"
         >
           <Home size={24} />
           <span className="sr-only">Strona główna</span>
-        </Link>
+        </button>
         <button
           onClick={() => setIsMobileMenuOpen(true)}
           className="p-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -129,7 +200,7 @@ export default function Navbar() {
           animate={isMobileMenuOpen ? "visible" : "hidden"}
           variants={mobileMenuOverlayVariants}
           className="fixed inset-0 bg-black/50 z-40 flex justify-end"
-          onClick={() => setIsMobileMenuOpen(false)} // Close menu when clicking outside
+          onClick={() => setIsMobileMenuOpen(false)}
         >
           {/* Mobile Menu Panel */}
           <motion.div
@@ -137,7 +208,7 @@ export default function Navbar() {
             animate={isMobileMenuOpen ? "visible" : "hidden"}
             variants={mobileMenuPanelVariants}
             className="w-full max-w-xs sm:max-w-sm bg-white dark:bg-gray-950 h-full shadow-2xl p-6 flex flex-col rounded-l-lg"
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the panel
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-end mb-8">
               <button
@@ -151,20 +222,23 @@ export default function Navbar() {
             <motion.nav
               initial="hidden"
               animate="visible"
-              variants={navVariants} // Reuse navVariants for the mobile menu container
+              variants={navVariants}
               className="flex flex-col gap-2 flex-grow"
             >
               {links.map((link, idx) => {
                 // Skip the first link if it's just for the home icon in the main navbar
-                if (link.href === "#" && link.label === "") {
+                if (link.targetId === "hero" && link.label === "") {
                   return null
                 }
-                const isActive = link.href === activeHash || (link.href === "#" && activeHash === "")
+                const isActive = link.targetId === activeSection
                 return (
                   <motion.div key={idx} variants={itemVariants}>
-                    <Link
-                      href={link.href}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-lg text-lg font-semibold
+                    <button
+                      onClick={() => {
+                        scrollToSection(link.targetId)
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className={`flex items-center gap-3 px-4 py-3 rounded-lg text-lg font-semibold w-full text-left
                                   transition-all duration-200 ease-out
                                   ${
                                     isActive
@@ -172,11 +246,10 @@ export default function Navbar() {
                                       : "text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
                                   }`}
                       aria-label={link.ariaLabel || link.label || undefined}
-                      onClick={() => setIsMobileMenuOpen(false)}
                     >
                       <link.Icon size={22} className={isActive ? "text-white" : "text-gray-600 dark:text-gray-400"} />
                       <span>{link.label}</span>
-                    </Link>
+                    </button>
                   </motion.div>
                 )
               })}
@@ -225,8 +298,7 @@ export default function Navbar() {
           `}
         >
           {links.map((link, idx) => {
-            // Sprawdzenie, czy link jest aktywny na podstawie hasha URL
-            const isActive = link.href === activeHash || (link.href === "#" && activeHash === "")
+            const isActive = link.targetId === activeSection
 
             return (
               <motion.div
@@ -236,12 +308,12 @@ export default function Navbar() {
                 onMouseLeave={() => setHoveredIdx(null)}
                 className="rounded-full"
               >
-                <Link
-                  href={link.href}
+                <button
+                  onClick={() => scrollToSection(link.targetId)}
                   className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full
                               text-sm font-medium transition-all duration-200 ease-out
-                              ${isActive ? "bg-white/25 dark:bg-black/50" : ""}`} // Aktywny styl
-                  aria-label={link.ariaLabel || link.label || undefined} // Dodano aria-label
+                              ${isActive ? "bg-white/25 dark:bg-black/50" : ""}`}
+                  aria-label={link.ariaLabel || link.label || undefined}
                 >
                   <span
                     className={`flex items-center gap-2 ${
@@ -250,11 +322,10 @@ export default function Navbar() {
                         : "text-white"
                     }`}
                   >
-                    {/* Użycie komponentu Icon bezpośrednio z propem color */}
                     <link.Icon size={20} color={hoveredIdx === idx ? "url(#nav-gradient)" : "#ffffff"} />
                     {link.label && <span className="hidden sm:inline">{link.label}</span>}
                   </span>
-                </Link>
+                </button>
               </motion.div>
             )
           })}
@@ -269,15 +340,13 @@ export default function Navbar() {
             <button
               onClick={toggleTheme}
               className="flex items-center p-1.5 sm:p-2 rounded-full transition-all duration-200 ease-out"
-              aria-label="Przełącz motyw" // Dodano aria-label
+              aria-label="Przełącz motyw"
             >
-              {/* dopiero po mountingu odczytujemy theme */}
               {mounted && theme === "dark" ? (
                 <Sun size={20} color={hoveredIdx === links.length ? "url(#nav-gradient)" : "#ffffff"} fill="none" />
               ) : mounted && theme === "light" ? (
                 <Moon size={20} color={hoveredIdx === links.length ? "url(#nav-gradient)" : "#ffffff"} fill="none" />
               ) : (
-                /* fallback domyślny we SSR: biała Moon */
                 <Moon size={20} color="#ffffff" fill="none" />
               )}
             </button>

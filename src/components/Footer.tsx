@@ -2,7 +2,6 @@
 "use client"
 
 import React, { useState } from "react"
-import Link from "next/link"
 import { motion, AnimatePresence, Variants } from "framer-motion"
 import { 
   Mail, 
@@ -288,6 +287,7 @@ function PrivacyPolicyModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
 
 export default function Footer() {
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState("hero")
 
   const contactLinks = [
     {
@@ -311,11 +311,94 @@ export default function Footer() {
   ]
 
   const navLinks = [
-    { href: "#", label: "Strona główna", icon: Home },
-    { href: "#uslugi", label: "Usługi", icon: LayoutGrid },
-    { href: "#projekty", label: "Projekty", icon: ImageIcon },
-    { href: "#kontakt", label: "Kontakt", icon: MessageCircle }
+    { targetId: "hero", label: "Strona główna", icon: Home },
+    { targetId: "uslugi", label: "Usługi", icon: LayoutGrid },
+    { targetId: "projekty", label: "Projekty", icon: ImageIcon },
+    { targetId: "kontakt", label: "Kontakt", icon: MessageCircle }
   ]
+
+  // Automatyczne wykrywanie aktywnej sekcji podczas scrollowania
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["hero", "uslugi", "projekty", "kontakt"]
+      const scrollPosition = window.scrollY + 150 // offset dla lepszego wykrywania
+
+      // Sprawdź czy jesteśmy na górze strony
+      if (window.scrollY < 100) {
+        setActiveSection("hero")
+        return
+      }
+
+      // Sprawdź którą sekcję aktualnie widzimy
+      let foundActiveSection = false
+      
+      for (const sectionId of sections.slice(1)) { // pomijamy hero, bo jest na górze
+        const element = document.getElementById(sectionId)
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          const elementTop = window.scrollY + rect.top
+          const elementBottom = elementTop + element.offsetHeight
+          
+          if (scrollPosition >= elementTop && scrollPosition < elementBottom) {
+            setActiveSection(sectionId)
+            foundActiveSection = true
+            break
+          }
+        }
+      }
+
+      // Jeśli nie znaleźliśmy żadnej aktywnej sekcji i nie jesteśmy na górze, 
+      // sprawdź czy może jesteśmy między sekcjami - wtedy ustaw hero
+      if (!foundActiveSection && window.scrollY >= 100) {
+        setActiveSection("hero")
+      }
+    }
+
+    // Wywołaj handleScroll od razu po załadowaniu, żeby ustawić poprawną sekcję
+    handleScroll()
+    
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  // Dodatkowy useEffect do resetowania aktywnej sekcji przy ładowaniu strony
+  React.useEffect(() => {
+    // Po załadowaniu komponentu sprawdź pozycję scrollowania
+    const checkInitialPosition = () => {
+      if (window.scrollY < 100) {
+        setActiveSection("hero")
+      }
+    }
+
+    // Sprawdź pozycję po krótkim opóźnieniu (żeby DOM się załadował)
+    const timer = setTimeout(checkInitialPosition, 100)
+    
+    return () => clearTimeout(timer)
+  }, [])
+
+  // Funkcja do smooth scrollowania (taka sama jak w navbarze)
+  const scrollToSection = (targetId: string) => {
+    // Dla home scrollujemy na górę strony
+    if (targetId === "hero") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      })
+      setActiveSection("hero")
+      return
+    }
+
+    // Dla innych sekcji szukamy elementu po ID
+    const element = document.getElementById(targetId)
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest"
+      })
+      setActiveSection(targetId)
+    }
+  }
 
   return (
     <>
@@ -341,7 +424,6 @@ export default function Footer() {
                 Tworzę nowoczesne strony internetowe i projekty graficzne, 
                 które wyróżniają marki w cyfrowym świecie.
               </p>
-
             </motion.div>
 
             {/* Kolumna 2: Kontakt */}
@@ -372,17 +454,26 @@ export default function Footer() {
                 Nawigacja
               </h4>
               <div className="space-y-3">
-                {navLinks.map((link, index) => (
-                  <motion.div key={index}>
-                    <Link
-                      href={link.href}
-                      className="flex items-center gap-3 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors group"
-                    >
-                      <link.icon className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                      <span className="text-sm">{link.label}</span>
-                    </Link>
-                  </motion.div>
-                ))}
+                {navLinks.map((link, index) => {
+                  const isActive = link.targetId === activeSection
+                  return (
+                    <motion.div key={index}>
+                      <button
+                        onClick={() => scrollToSection(link.targetId)}
+                        className={`flex items-center gap-3 transition-colors group w-full text-left ${
+                          isActive 
+                            ? "text-indigo-600 dark:text-indigo-400" 
+                            : "text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400"
+                        }`}
+                      >
+                        <link.icon className={`w-4 h-4 group-hover:scale-110 transition-transform ${
+                          isActive ? "scale-110" : ""
+                        }`} />
+                        <span className="text-sm font-medium">{link.label}</span>
+                      </button>
+                    </motion.div>
+                  )
+                })}
               </div>
             </motion.div>
           </div>
