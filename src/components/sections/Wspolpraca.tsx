@@ -425,15 +425,6 @@ export default function Wspolpraca() {
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </a>
           </motion.div>
-          
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-            className="text-gray-600 dark:text-gray-400 mt-4"
-          >
-            Bezpłatna konsultacja w ciągu 24h
-          </motion.p>
         </motion.div>
       </motion.section>
     </AnimatedBackground>
