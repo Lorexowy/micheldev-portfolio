@@ -1,10 +1,6 @@
 /* Na górze */
 @import "tailwindcss";
 
-/* Dodatkowe konfiguracje, np. dark mode */
-@theme {
-  /* opcjonalnie zdefiniuj swój motyw */
-}
 
 /* Twoje własne style */
 html {
