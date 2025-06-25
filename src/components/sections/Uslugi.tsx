@@ -1,17 +1,20 @@
 // src/components/sections/Uslugi.tsx
+"use client"
+
 import React from "react"
 import { motion, useMotionValue, useMotionTemplate } from "framer-motion"
-import { Paintbrush, Laptop, CheckCircle } from "lucide-react"
+import { CheckCircle } from "lucide-react"
+
 import AnimatedBackground from "@/components/ui/AnimatedBackground"
+import { services } from "@/data/services"
+import { Service } from "@/types"
 
 interface ServiceCardProps {
-  icon: React.ComponentType<{ className?: string }>
-  title: string
-  description: string
+  service: Service
   index: number
 }
 
-function ServiceCard({ icon: Icon, title, description, index }: ServiceCardProps) {
+function ServiceCard({ service, index }: ServiceCardProps) {
   const pointerX = useMotionValue(-100)
   const pointerY = useMotionValue(-100)
   const highlight = useMotionTemplate`radial-gradient(circle at ${pointerX}px ${pointerY}px, rgba(255,255,255,0.2), transparent 80%)`
@@ -21,6 +24,7 @@ function ServiceCard({ icon: Icon, title, description, index }: ServiceCardProps
     pointerX.set(e.clientX - rect.left)
     pointerY.set(e.clientY - rect.top)
   }
+  
   const handleLeave = () => {
     pointerX.set(-100)
     pointerY.set(-100)
@@ -42,25 +46,40 @@ function ServiceCard({ icon: Icon, title, description, index }: ServiceCardProps
           className="absolute inset-0 pointer-events-none"
           style={{ background: highlight, opacity: 0.6 }}
         />
+        
         <div className="flex justify-center mb-4">
-          <Icon className="w-10 h-10 text-indigo-500 dark:text-indigo-200" />
+          <service.icon className="w-10 h-10 text-indigo-500 dark:text-indigo-200" />
         </div>
-        <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">{title}</h3>
+        
+        <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+          {service.title}
+        </h3>
+        
+        <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+          {service.description}
+        </p>
+        
         <motion.ul
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
-          className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 list-none"
+          variants={{ 
+            hidden: {}, 
+            visible: { transition: { staggerChildren: 0.1 } } 
+          }}
+          className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 list-none w-full"
         >
-          {description.split(",").map((item, idx) => (
+          {service.features.map((feature, idx) => (
             <motion.li
               key={idx}
-              variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+              variants={{ 
+                hidden: { opacity: 0, y: 10 }, 
+                visible: { opacity: 1, y: 0 } 
+              }}
               className="flex items-center gap-2 text-gray-700 dark:text-gray-300"
             >
               <CheckCircle className="w-4 h-4 text-indigo-500 flex-shrink-0" />
-              <span>{item.trim()}</span>
+              <span className="text-sm">{feature}</span>
             </motion.li>
           ))}
         </motion.ul>
@@ -70,21 +89,6 @@ function ServiceCard({ icon: Icon, title, description, index }: ServiceCardProps
 }
 
 export default function Uslugi() {
-  const services = [
-    {
-      icon: Paintbrush,
-      title: "Projektowanie graficzne",
-      description:
-        "Projektowanie logotypów, Identyfikacja wizualna, Branding, Materiały marketingowe, Grafiki social media, Plakaty / Reklamy / Banery",
-    },
-    {
-      icon: Laptop,
-      title: "Tworzenie stron internetowych",
-      description:
-        "Strony one-page, Strony multi-page, HTML / CSS / JS, Next.js, Responsywny design, Optymalizacja wydajności, Optymalizacja SEO, Wordpress",
-    },
-  ]
-
   return (
     <AnimatedBackground
       variant="section"
@@ -92,10 +96,31 @@ export default function Uslugi() {
     >
       <section id="uslugi">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-extrabold mb-12 text-center text-gray-900 dark:text-gray-50">Moje <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-blue-400 to-indigo-400 bg-[length:200%_200%]">Usługi</span></h2>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl font-extrabold mb-4 text-gray-900 dark:text-gray-50">
+              Moje{" "}
+              <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-blue-400 to-indigo-400 bg-[length:200%_200%]">
+                Usługi
+              </span>
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Oferuję kompleksowe rozwiązania, które pomogą Twojej marce wyróżnić się w cyfrowym świecie.
+            </p>
+          </motion.div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 items-stretch">
             {services.map((service, index) => (
-              <ServiceCard key={index} icon={service.icon} title={service.title} description={service.description} index={index} />
+              <ServiceCard 
+                key={service.title} 
+                service={service} 
+                index={index} 
+              />
             ))}
           </div>
         </div>

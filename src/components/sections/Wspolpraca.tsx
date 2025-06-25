@@ -3,77 +3,11 @@
 
 import React, { useRef } from "react"
 import { motion, useScroll, useTransform, useInView, Variants } from "framer-motion"
-import { MessageCircle, Calculator, Wrench, Rocket, ArrowRight } from "lucide-react"
+import { MessageCircle, ArrowRight } from "lucide-react"
+
 import AnimatedBackground from "@/components/ui/AnimatedBackground"
-
-interface Step {
-  id: number
-  icon: React.ComponentType<{ className?: string }>
-  title: string
-  description: string
-  details: string[]
-  duration: string
-  color: string
-}
-
-const steps: Step[] = [
-  {
-    id: 1,
-    icon: MessageCircle,
-    title: "Kontakt i omówienie potrzeb",
-    description: "Poznajemy się i omawiamy Twoją wizję projektu",
-    details: [
-      "Bezpłatna konsultacja",
-      "Analiza wymagań",
-      "Określenie celów projektu",
-      "Wybór najlepszego rozwiązania"
-    ],
-    duration: "",
-    color: "from-blue-500 to-cyan-500"
-  },
-  {
-    id: 2,
-    icon: Calculator,
-    title: "Wycena i harmonogram",
-    description: "Przygotowuję szczegółową ofertę i plan realizacji",
-    details: [
-      "Transparentna wycena",
-      "Szczegółowy harmonogram",
-      "Podpisanie umowy",
-      "Ustalenie kamieni milowych"
-    ],
-    duration: "",
-    color: "from-purple-500 to-pink-500"
-  },
-  {
-    id: 3,
-    icon: Wrench,
-    title: "Realizacja projektu",
-    description: "Tworzę Twój projekt z regularnym feedbackiem",
-    details: [
-      "Regularne aktualizacje postępu",
-      "Możliwość wprowadzania zmian",
-      "Testy i optymalizacja",
-      "Prezentacja wersji roboczych"
-    ],
-    duration: "",
-    color: "from-green-500 to-emerald-500"
-  },
-  {
-    id: 4,
-    icon: Rocket,
-    title: "Wdrożenie i wsparcie",
-    description: "Uruchamiamy projekt i zapewniam dalsze wsparcie",
-    details: [
-      "Wdrożenie i publikacja",
-      "Szkolenie z obsługi",
-      "30 dni bezpłatnego wsparcia",
-      "Możliwość rozwoju projektu"
-    ],
-    duration: "",
-    color: "from-orange-500 to-red-500"
-  }
-]
+import { collaborationSteps } from "@/data/collaboration"
+import { CollaborationStep } from "@/types"
 
 const containerVariants: Variants = {
   hidden: {},
@@ -115,6 +49,153 @@ const iconVariants: Variants = {
       delay: 0.2
     }
   }
+}
+
+interface StepCardProps {
+  step: CollaborationStep
+  index: number
+  stepProgress: any
+  rippleScale: any
+  rippleOpacity: any
+  borderScale: any
+  borderOpacity: any
+}
+
+function StepCard({ step, index, stepProgress, rippleScale, rippleOpacity, borderScale, borderOpacity }: StepCardProps) {
+  return (
+    <motion.div
+      variants={stepVariants}
+      className={`flex flex-col lg:flex-row items-center gap-8 lg:gap-16 ${
+        index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
+      }`}
+    >
+      {/* Karta kroku */}
+      <motion.div
+        className="flex-1 group relative"
+        whileHover={{ y: -5 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+      >
+        <div className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 shadow-sm hover:shadow-lg transition-all duration-300">
+          
+          {/* Subtelny akcent kolorystyczny */}
+          <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b ${step.color} rounded-l-xl`} />
+          
+          {/* Numer kroku */}
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Krok {step.id}
+            </span>
+            <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+            {step.duration && (
+              <span className="text-xs text-gray-400 dark:text-gray-500">
+                {step.duration}
+              </span>
+            )}
+          </div>
+
+          {/* Header karty */}
+          <div className="flex items-start gap-6 mb-6">
+            {/* Ikona */}
+            <motion.div
+              variants={iconVariants}
+              className="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center group-hover:bg-gray-100 dark:group-hover:bg-gray-700 transition-colors"
+              whileHover={{ scale: 1.05 }}
+            >
+              <step.icon className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+            </motion.div>
+            
+            <div className="flex-1">
+              {/* Tytuł */}
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                {step.title}
+              </h3>
+              
+              {/* Opis */}
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                {step.description}
+              </p>
+            </div>
+          </div>
+
+          {/* Lista szczegółów */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.1 } }
+            }}
+            className="space-y-3"
+          >
+            {step.details.map((detail, detailIndex) => (
+              <motion.div
+                key={detailIndex}
+                variants={{
+                  hidden: { opacity: 0, x: -20 },
+                  visible: { opacity: 1, x: 0 }
+                }}
+                className="flex items-center gap-3"
+              >
+                <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-500 rounded-full flex-shrink-0" />
+                <span className="text-sm text-gray-700 dark:text-gray-300">
+                  {detail}
+                </span>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Centralny punkt na linii - tylko na desktop */}
+      <div className="hidden lg:flex items-center justify-center">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ 
+            delay: index * 0.2 + 0.5,
+            type: "spring",
+            stiffness: 200,
+            damping: 15
+          }}
+          className={`relative w-4 h-4 rounded-full bg-white dark:bg-gray-900 border-2 border-gray-300 dark:border-gray-600 z-10`}
+        >
+          {/* Animacja gdy kropka dojdzie do punktu */}
+          <motion.div
+            className={`absolute inset-0 rounded-full bg-gradient-to-r ${step.color}`}
+            style={{
+              scale: stepProgress,
+              opacity: stepProgress
+            }}
+          />
+          
+          {/* Pulsujący pierścień gdy punkt jest aktywny */}
+          <motion.div
+            className={`absolute inset-0 rounded-full bg-gradient-to-r ${step.color}`}
+            style={{
+              scale: rippleScale,
+              opacity: rippleOpacity
+            }}
+          />
+          
+          {/* Dodatkowy pierścień dla efektu ripple */}
+          <motion.div
+            className={`absolute inset-0 rounded-full border-2`}
+            style={{
+              borderColor: `rgb(${step.color.includes('blue') ? '59 130 246' : 
+                                step.color.includes('purple') ? '147 51 234' :
+                                step.color.includes('green') ? '34 197 94' :
+                                '249 115 22'})`,
+              scale: borderScale,
+              opacity: borderOpacity
+            }}
+          />
+        </motion.div>
+      </div>
+
+      {/* Spacer dla layoutu */}
+      <div className="hidden lg:block flex-1" />
+    </motion.div>
+  )
 }
 
 export default function Wspolpraca() {
@@ -264,7 +345,7 @@ export default function Wspolpraca() {
 
           {/* Kroki procesu */}
           <div className="space-y-12 lg:space-y-24">
-            {steps.map((step, index) => {
+            {collaborationSteps.map((step, index) => {
               const stepProgress = stepProgressArray[index]
               const rippleScale = rippleScaleArray[index]
               const rippleOpacity = rippleOpacityArray[index]
@@ -272,134 +353,16 @@ export default function Wspolpraca() {
               const borderOpacity = borderOpacityArray[index]
               
               return (
-                <motion.div
+                <StepCard
                   key={step.id}
-                  variants={stepVariants}
-                  className={`flex flex-col lg:flex-row items-center gap-8 lg:gap-16 ${
-                    index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
-                  }`}
-                >
-                {/* Minimalistyczna karta kroku */}
-                <motion.div
-                  className="flex-1 group relative"
-                  whileHover={{ y: -5 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                  <div className="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-8 shadow-sm hover:shadow-lg transition-all duration-300">
-                    
-                    {/* Subtelny akcent kolorystyczny */}
-                    <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b ${step.color} rounded-l-xl`} />
-                    
-                    {/* Numer kroku */}
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        Krok {step.id}
-                      </span>
-                      <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
-                    </div>
-
-                    {/* Header karty */}
-                    <div className="flex items-start gap-6 mb-6">
-                      {/* Minimalistyczna ikona */}
-                      <motion.div
-                        variants={iconVariants}
-                        className="flex-shrink-0 w-12 h-12 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center group-hover:bg-gray-100 dark:group-hover:bg-gray-700 transition-colors"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <step.icon className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-                      </motion.div>
-                      
-                      <div className="flex-1">
-                        {/* Tytuł */}
-                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                          {step.title}
-                        </h3>
-                        
-                        {/* Opis */}
-                        <p className="text-gray-600 dark:text-gray-400 mb-6">
-                          {step.description}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Lista szczegółów */}
-                    <motion.div
-                      initial="hidden"
-                      whileInView="visible"
-                      variants={{
-                        hidden: {},
-                        visible: { transition: { staggerChildren: 0.1 } }
-                      }}
-                      className="space-y-3"
-                    >
-                      {step.details.map((detail, detailIndex) => (
-                        <motion.div
-                          key={detailIndex}
-                          variants={{
-                            hidden: { opacity: 0, x: -20 },
-                            visible: { opacity: 1, x: 0 }
-                          }}
-                          className="flex items-center gap-3"
-                        >
-                          <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-500 rounded-full flex-shrink-0" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">
-                            {detail}
-                          </span>
-                        </motion.div>
-                      ))}
-                    </motion.div>
-                  </div>
-                </motion.div>
-
-                {/* Centralny punkt na linii - tylko na desktop */}
-                <div className="hidden lg:flex items-center justify-center">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={isInView ? { scale: 1 } : { scale: 0 }}
-                    transition={{ 
-                      delay: index * 0.2 + 0.5,
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 15
-                    }}
-                    className={`relative w-4 h-4 rounded-full bg-white dark:bg-gray-900 border-2 border-gray-300 dark:border-gray-600 z-10`}
-                  >
-                    {/* Animacja gdy kropka dojdzie do punktu */}
-                    <motion.div
-                      className={`absolute inset-0 rounded-full bg-gradient-to-r ${step.color}`}
-                      style={{
-                        scale: stepProgress,
-                        opacity: stepProgress
-                      }}
-                    />
-                    
-                    {/* Pulsujący pierścień gdy punkt jest aktywny */}
-                    <motion.div
-                      className={`absolute inset-0 rounded-full bg-gradient-to-r ${step.color}`}
-                      style={{
-                        scale: rippleScale,
-                        opacity: rippleOpacity
-                      }}
-                    />
-                    
-                    {/* Dodatkowy pierścień dla efektu ripple */}
-                    <motion.div
-                      className={`absolute inset-0 rounded-full border-2`}
-                      style={{
-                        borderColor: `rgb(${step.color.includes('blue') ? '59 130 246' : 
-                                          step.color.includes('purple') ? '147 51 234' :
-                                          step.color.includes('green') ? '34 197 94' :
-                                          '249 115 22'})`,
-                        scale: borderScale,
-                        opacity: borderOpacity
-                      }}
-                    />
-                  </motion.div>
-                </div>
-
-                {/* Spacer dla layoutu */}
-                <div className="hidden lg:block flex-1" />
-              </motion.div>
+                  step={step}
+                  index={index}
+                  stepProgress={stepProgress}
+                  rippleScale={rippleScale}
+                  rippleOpacity={rippleOpacity}
+                  borderScale={borderScale}
+                  borderOpacity={borderOpacity}
+                />
               )
             })}
           </div>

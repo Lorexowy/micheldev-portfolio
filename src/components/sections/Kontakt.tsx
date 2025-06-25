@@ -5,90 +5,26 @@ import React, { useState, useRef } from "react"
 import { motion, useInView, Variants, AnimatePresence } from "framer-motion"
 import emailjs from '@emailjs/browser'
 import { 
-  Mail, 
-  Phone, 
-  Instagram, 
   Send, 
-  MapPin, 
-  Clock,
-  ChevronDown,
   Share2,
-  Facebook,
-  Twitter,
-  Linkedin,
-  MessageCircle,
+  ChevronDown,
   CheckCircle,
   AlertCircle
 } from "lucide-react"
-import AnimatedBackground from "@/components/ui/AnimatedBackground"
 
-// EmailJS configuration
+import AnimatedBackground from "@/components/ui/AnimatedBackground"
+import { contactInfo, socialShareLinks, faqData } from "@/data/contact"
+import { ContactFormData } from "@/types"
+
+// EmailJS configuration - przenieś to do .env w przyszłości
 const EMAILJS_SERVICE_ID = "service_38manau"
 const EMAILJS_TEMPLATE_ID = "template_5bit5fm"  
 const EMAILJS_PUBLIC_KEY = "zacMgwhSoVuiEfIqg"
 
-// Initialize EmailJS (opcjonalne, ale zalecane)
+// Initialize EmailJS
 if (typeof window !== 'undefined') {
   emailjs.init(EMAILJS_PUBLIC_KEY)
 }
-
-interface FormData {
-  name: string
-  email: string
-  subject: string
-  message: string
-}
-
-interface FAQItem {
-  question: string
-  answer: string
-}
-
-const faqData: FAQItem[] = [
-  {
-    question: "Ile czasu zajmuje realizacja projektu?",
-    answer: "Czas realizacji zależy od skomplikowania projektu. Proste strony one-page to 1-2 tygodnie, bardziej złożone projekty mogą zająć 3-6 tygodni. Zawsze ustalamy konkretny harmonogram podczas pierwszej konsultacji."
-  },
-  {
-    question: "Czy oferujesz wsparcie techniczne po ukończeniu projektu?",
-    answer: "Tak! Każdy projekt zawiera 30 dni bezpłatnego wsparcia technicznego. Po tym okresie oferuję pakiety serwisowe dostosowane do potrzeb klienta, w tym aktualizacje, kopie zapasowe i drobne modyfikacje."
-  },
-  {
-    question: "Jakie są koszty realizacji strony internetowej?",
-    answer: "Ceny zależą od zakresu projektu. Proste strony zaczynają się od 1000 zł, bardziej zaawansowane projekty e-commerce czy aplikacje webowe to koszt od 5000 zł wzwyż. Każda wycena jest indywidualna i transparentna."
-  },
-  {
-    question: "Czy projektujesz strony responsywne?",
-    answer: "Absolutnie! Wszystkie moje projekty są w pełni responsywne i dostosowane do urządzeń mobilnych, tabletów i komputerów. Testuję każdą stronę na różnych urządzeniach, aby zapewnić optymalne doświadczenie użytkownika."
-  }
-]
-
-const socialShareLinks = [
-  {
-    name: "Facebook",
-    icon: Facebook,
-    url: "https://www.facebook.com/sharer/sharer.php?u=",
-    color: "hover:text-blue-600"
-  },
-  {
-    name: "Twitter",
-    icon: Twitter,
-    url: "https://twitter.com/intent/tweet?url=",
-    color: "hover:text-sky-500"
-  },
-  {
-    name: "LinkedIn",
-    icon: Linkedin,
-    url: "https://www.linkedin.com/sharing/share-offsite/?url=",
-    color: "hover:text-blue-700"
-  },
-  {
-    name: "WhatsApp",
-    icon: MessageCircle,
-    url: "https://wa.me/?text=",
-    color: "hover:text-green-600"
-  }
-]
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -117,7 +53,7 @@ const cardVariants: Variants = {
 }
 
 function ContactForm() {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
     subject: "",
@@ -150,7 +86,7 @@ function ContactForm() {
         from_email: formData.email,
         subject: formData.subject,
         message: formData.message,
-        to_email: 'mateusz.michel7@gmail.com' // Twój email
+        to_email: 'mateusz.michel7@gmail.com'
       }
 
       // Send email using EmailJS
@@ -401,42 +337,10 @@ function ContactInfo() {
   const [currentUrl, setCurrentUrl] = useState('')
 
   React.useEffect(() => {
-    // Ustawiamy URL dopiero po załadowaniu komponentu na kliencie
     if (typeof window !== 'undefined') {
       setCurrentUrl(window.location.href)
     }
   }, [])
-
-  const contactItems = [
-    {
-      icon: Mail,
-      label: "Email",
-      value: "mateusz.michel7@gmail.com",
-      href: "mailto:mateusz.michel7@gmail.com",
-      color: "from-blue-500 to-cyan-500"
-    },
-    {
-      icon: Phone,
-      label: "Telefon",
-      value: "+48 519 430 169",
-      href: "tel:+48519430169",
-      color: "from-green-500 to-emerald-500"
-    },
-    {
-      icon: Instagram,
-      label: "Instagram",
-      value: "@michelwebdev",
-      href: "https://www.instagram.com/michelwebdev?igsh=MTBxYW9lY2w1dmk4MQ%3D%3D&utm_source=qr",
-      color: "from-pink-500 to-rose-500"
-    },
-    {
-      icon: Clock,
-      label: "Czas odpowiedzi",
-      value: "Do 24 godzin",
-      href: "#",
-      color: "from-purple-500 to-indigo-500"
-    }
-  ]
 
   return (
     <motion.div
@@ -449,7 +353,7 @@ function ContactInfo() {
         </h3>
         
         <div className="space-y-4">
-          {contactItems.map((item, index) => (
+          {contactInfo.map((item, index) => (
             <motion.a
               key={index}
               href={item.href}
@@ -648,7 +552,6 @@ export default function Kontakt() {
               ease: "easeInOut"
             }}
           >
-            <MapPin className="w-4 h-4 text-indigo-500" />
             <span className="text-sm text-gray-700 dark:text-gray-300">
               Pracuję zdalnie z całą Polską
             </span>

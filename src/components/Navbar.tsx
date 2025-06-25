@@ -1,23 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { Home, LayoutGrid, ImageIcon, Sun, Moon, Mail, Menu, X, type LucideIcon } from "lucide-react"
+import React, { useEffect, useState } from "react"
+import { Sun, Moon, Menu, X } from "lucide-react"
 import { useTheme } from "next-themes"
 import { motion, type Variants } from "framer-motion"
 
-interface NavLink {
-  targetId: string // ID sekcji do scrollowania
-  label: string
-  Icon: LucideIcon 
-  ariaLabel?: string 
-}
-
-const links: NavLink[] = [
-  { targetId: "hero", label: "", Icon: Home, ariaLabel: "Strona główna" }, 
-  { targetId: "uslugi", label: "Usługi", Icon: LayoutGrid, ariaLabel: "Usługi" },
-  { targetId: "projekty", label: "Projekty", Icon: ImageIcon, ariaLabel: "Projekty" },
-  { targetId: "kontakt", label: "Kontakt", Icon: Mail, ariaLabel: "Kontakt" },
-]
+import { navLinks, getMobileNavLinks } from "@/data/navigation"
+import { SectionId } from "@/types"
 
 const navVariants: Variants = {
   hidden: { y: -50, opacity: 0 },
@@ -34,8 +23,8 @@ const itemVariants: Variants = {
 }
 
 const mobileMenuOverlayVariants: Variants = {
-  hidden: { opacity: 0, pointerEvents: "none" },
-  visible: { opacity: 1, pointerEvents: "auto", transition: { duration: 0.3 } },
+  hidden: { opacity: 0, pointerEvents: "none" as const },
+  visible: { opacity: 1, pointerEvents: "auto" as const, transition: { duration: 0.3 } },
 }
 
 const mobileMenuPanelVariants: Variants = {
@@ -48,8 +37,11 @@ export default function Navbar() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
-  const [activeSection, setActiveSection] = useState("hero") 
+  const [activeSection, setActiveSection] = useState<SectionId>("hero") 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false) 
+
+  // Get mobile nav links without empty labels
+  const mobileNavLinks = getMobileNavLinks()
 
   useEffect(() => {
     setMounted(true)
@@ -62,7 +54,7 @@ export default function Navbar() {
   }, [])
 
   // Funkcja do smooth scrollowania bez zmiany URL
-  const scrollToSection = (targetId: string) => {
+  const scrollToSection = (targetId: SectionId) => {
     // Dla home scrollujemy na górę strony
     if (targetId === "hero") {
       window.scrollTo({
@@ -88,7 +80,7 @@ export default function Navbar() {
   // Automatyczne wykrywanie aktywnej sekcji podczas scrollowania
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["hero", "uslugi", "projekty", "kontakt"]
+      const sections: SectionId[] = ["hero", "uslugi", "projekty", "kontakt"]
       const scrollPosition = window.scrollY + 150 // offset dla lepszego wykrywania
 
       // Sprawdź czy jesteśmy na górze strony
@@ -183,7 +175,8 @@ export default function Navbar() {
           className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white"
           aria-label="Strona główna"
         >
-          <Home size={24} />
+          {/* Use the Home icon from navLinks */}
+          {navLinks[0] && React.createElement(navLinks[0].icon, { size: 24 })}
           <span className="sr-only">Strona główna</span>
         </button>
         <button
@@ -225,17 +218,13 @@ export default function Navbar() {
               variants={navVariants}
               className="flex flex-col gap-2 flex-grow"
             >
-              {links.map((link, idx) => {
-                // Skip the first link if it's just for the home icon in the main navbar
-                if (link.targetId === "hero" && link.label === "") {
-                  return null
-                }
+              {mobileNavLinks.map((link, idx) => {
                 const isActive = link.targetId === activeSection
                 return (
                   <motion.div key={idx} variants={itemVariants}>
                     <button
                       onClick={() => {
-                        scrollToSection(link.targetId)
+                        scrollToSection(link.targetId as SectionId)
                         setIsMobileMenuOpen(false)
                       }}
                       className={`flex items-center gap-3 px-4 py-3 rounded-lg text-lg font-semibold w-full text-left
@@ -247,7 +236,10 @@ export default function Navbar() {
                                   }`}
                       aria-label={link.ariaLabel || link.label || undefined}
                     >
-                      <link.Icon size={22} className={isActive ? "text-white" : "text-gray-600 dark:text-gray-400"} />
+                      {React.createElement(link.icon, { 
+                        size: 22, 
+                        className: isActive ? "text-white" : "text-gray-600 dark:text-gray-400" 
+                      })}
                       <span>{link.label}</span>
                     </button>
                   </motion.div>
@@ -297,7 +289,7 @@ export default function Navbar() {
             }
           `}
         >
-          {links.map((link, idx) => {
+          {navLinks.map((link, idx) => {
             const isActive = link.targetId === activeSection
 
             return (
@@ -309,7 +301,7 @@ export default function Navbar() {
                 className="rounded-full"
               >
                 <button
-                  onClick={() => scrollToSection(link.targetId)}
+                  onClick={() => scrollToSection(link.targetId as SectionId)}
                   className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full
                               text-sm font-medium transition-all duration-200 ease-out
                               ${isActive ? "bg-white/25 dark:bg-black/50" : ""}`}
@@ -322,7 +314,10 @@ export default function Navbar() {
                         : "text-white"
                     }`}
                   >
-                    <link.Icon size={20} color={hoveredIdx === idx ? "url(#nav-gradient)" : "#ffffff"} />
+                    {React.createElement(link.icon, {
+                      size: 20,
+                      color: hoveredIdx === idx ? "url(#nav-gradient)" : "#ffffff"
+                    })}
                     {link.label && <span className="hidden sm:inline">{link.label}</span>}
                   </span>
                 </button>
@@ -333,7 +328,7 @@ export default function Navbar() {
           {/* Theme toggle */}
           <motion.div
             variants={itemVariants}
-            onMouseEnter={() => setHoveredIdx(links.length)}
+            onMouseEnter={() => setHoveredIdx(navLinks.length)}
             onMouseLeave={() => setHoveredIdx(null)}
             className="pl-2 sm:pl-3 border-l border-white/40 dark:border-white/20 rounded-full"
           >
@@ -343,9 +338,9 @@ export default function Navbar() {
               aria-label="Przełącz motyw"
             >
               {mounted && theme === "dark" ? (
-                <Sun size={20} color={hoveredIdx === links.length ? "url(#nav-gradient)" : "#ffffff"} fill="none" />
+                <Sun size={20} color={hoveredIdx === navLinks.length ? "url(#nav-gradient)" : "#ffffff"} fill="none" />
               ) : mounted && theme === "light" ? (
-                <Moon size={20} color={hoveredIdx === links.length ? "url(#nav-gradient)" : "#ffffff"} fill="none" />
+                <Moon size={20} color={hoveredIdx === navLinks.length ? "url(#nav-gradient)" : "#ffffff"} fill="none" />
               ) : (
                 <Moon size={20} color="#ffffff" fill="none" />
               )}
