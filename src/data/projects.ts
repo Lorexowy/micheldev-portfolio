@@ -7,27 +7,21 @@ export const projects: Project[] = [
     title: "VGEO",
     description: "Multi-page strona internetowa stworzona dla firmy geodezyjnej VGEO",
     image: "/images/vgeoweb.png",
-    liveUrl: "http://www.vgeo.pl",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    category: "website"
+    liveUrl: "http://www.vgeo.pl"
   },
   {
     id: 2,
     title: "VOYAGER - Polska Galanteria Skórzana",
     description: "Multi-page strona internetowa stworzona dla firmy kaletniczej VOYAGER",
     image: "/images/voyagersopelweb.png",
-    liveUrl: "https://voyagersopel.pl",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Responsive Design"],
-    category: "website"
+    liveUrl: "https://voyagersopel.pl"
   },
   {
     id: 3,
     title: "Nitką i Szydełkiem",
     description: "One-page strona internetowa stworzona dla osoby prywatnej zajmującej się rękodziełem",
     image: "/images/nitkaiszydelkiemweb.png",
-    liveUrl: "https://nitkaiszydelkiem.pl",
-    technologies: ["Next.js", "Tailwind CSS", "One-page Design"],
-    category: "website"
+    liveUrl: "https://nitkaiszydelkiem.pl"
   }
 ]
 
