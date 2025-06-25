@@ -2,7 +2,7 @@
 "use client"
 
 import React, { useRef } from "react"
-import { motion, useScroll, useTransform, useInView, Variants } from "framer-motion"
+import { motion, useScroll, useTransform, useInView, Variants, MotionValue } from "framer-motion"
 import { MessageCircle, ArrowRight } from "lucide-react"
 
 import AnimatedBackground from "@/components/ui/AnimatedBackground"
@@ -54,11 +54,11 @@ const iconVariants: Variants = {
 interface StepCardProps {
   step: CollaborationStep
   index: number
-  stepProgress: any
-  rippleScale: any
-  rippleOpacity: any
-  borderScale: any
-  borderOpacity: any
+  stepProgress: MotionValue<number>
+  rippleScale: MotionValue<number>
+  rippleOpacity: MotionValue<number>
+  borderScale: MotionValue<number>
+  borderOpacity: MotionValue<number>
 }
 
 function StepCard({ step, index, stepProgress, rippleScale, rippleOpacity, borderScale, borderOpacity }: StepCardProps) {
