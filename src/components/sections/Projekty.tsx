@@ -1,26 +1,34 @@
-// src/components/sections/Projekty.tsx
 "use client"
 
-import React from "react"
+import React, { useMemo, useCallback } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { ExternalLink } from "lucide-react"
-import { motion, useAnimation, Variants, useInView } from 'framer-motion'
+import { motion, useInView, Variants } from 'framer-motion'
 
 import AnimatedBackground from "@/components/ui/AnimatedBackground"
 import { projects } from "@/data/projects"
 import { Project } from "@/types"
 
+// UPROSZCZONE ANIMACJE z prawidłowymi typami
 const container: Variants = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.2 }
+    transition: { staggerChildren: 0.1 }
   }
 }
 
 const card: Variants = {
-  hidden: { opacity: 0, y: 50 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
+  hidden: { opacity: 0, y: 20 },
+  show: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      type: 'tween',
+      duration: 0.3,
+      ease: 'easeOut'
+    } 
+  }
 }
 
 interface ProjectCardProps {
@@ -31,8 +39,7 @@ function ProjectCard({ project }: ProjectCardProps) {
   return (
     <motion.div
       variants={card}
-      whileHover={{ scale: 1.03 }}
-      className="relative flex flex-col overflow-hidden rounded-xl border border-white/30 bg-white/40 backdrop-blur-md shadow-lg hover:shadow-xl transition-shadow duration-300 dark:border-gray-800/30 dark:bg-gray-900/40"
+      className="relative flex flex-col overflow-hidden rounded-xl border border-white/30 bg-white/40 backdrop-blur-md shadow-lg hover:shadow-xl transition-shadow duration-200 dark:border-gray-800/30 dark:bg-gray-900/40"
     >
       <div className="relative w-full h-48">
         <Image
@@ -42,6 +49,7 @@ function ProjectCard({ project }: ProjectCardProps) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover rounded-t-lg"
           loading="lazy"
+          quality={75}
         />
         {project.category && (
           <div className="absolute top-2 left-2 px-2 py-1 bg-indigo-500/90 text-white text-xs rounded-full">
@@ -89,13 +97,13 @@ function ProjectCard({ project }: ProjectCardProps) {
 }
 
 export default function Projekty() {
-  const controls = useAnimation()
   const ref = React.useRef<HTMLElement>(null)
-  const inView = useInView(ref, { amount: 0.2 })
+  const inView = useInView(ref, { amount: 0.2, once: true })
 
-  React.useEffect(() => {
-    if (inView) controls.start('show')
-  }, [controls, inView])
+  const memoizedProjects = useMemo(() => 
+    projects.map((project) => (
+      <ProjectCard key={project.id} project={project} />
+    )), [])
 
   return (
     <AnimatedBackground
@@ -107,13 +115,11 @@ export default function Projekty() {
         id="projekty"
         variants={container}
         initial="hidden"
-        animate={controls}
+        animate={inView ? "show" : "hidden"}
       >
         <div className="max-w-6xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6 }}
+            variants={card}
             className="text-center mb-12"
           >
             <h2 className="text-4xl font-extrabold mb-4 text-gray-900 dark:text-gray-50">
@@ -127,11 +133,12 @@ export default function Projekty() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
+          <motion.div 
+            variants={container}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {memoizedProjects}
+          </motion.div>
 
           {projects.length === 0 && (
             <motion.div
