@@ -1,5 +1,5 @@
 // src/data/navigation.ts
-import { Home, LayoutGrid, ImageIcon, Mail, MessageCircle } from "lucide-react"
+import { Home, LayoutGrid, ImageIcon, Mail, MessageCircle, FolderIcon, FolderRootIcon } from "lucide-react"
 import { NavLink } from '@/types'
 
 // Linki nawigacyjne
@@ -21,6 +21,12 @@ export const navLinks: NavLink[] = [
     label: "Projekty", 
     icon: ImageIcon, 
     ariaLabel: "Projekty" 
+  },
+  { 
+    targetId: "wspolpraca", 
+    label: "Współpraca", 
+    icon: FolderRootIcon, 
+    ariaLabel: "Wspolpraca" 
   },
   { 
     targetId: "kontakt", 
@@ -49,6 +55,12 @@ export const footerNavLinks: NavLink[] = [
     label: "Projekty", 
     icon: ImageIcon, 
     ariaLabel: "Projekty" 
+  },
+  { 
+    targetId: "wspolpraca", 
+    label: "Współpraca", 
+    icon: FolderRootIcon, 
+    ariaLabel: "Wspolpraca" 
   },
   { 
     targetId: "kontakt", 

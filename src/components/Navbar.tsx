@@ -73,7 +73,7 @@ export default function Navbar() {
   // Automatyczne wykrywanie aktywnej sekcji podczas scrollowania
   useEffect(() => {
     const handleScroll = () => {
-      const sections: SectionId[] = ["hero", "uslugi", "projekty", "kontakt"]
+      const sections: SectionId[] = ["hero", "uslugi", "projekty", "wspolpraca", "kontakt"]
       const scrollPosition = window.scrollY + 150 // offset dla lepszego wykrywania
 
       // Sprawdź czy jesteśmy na górze strony
