@@ -1,5 +1,5 @@
 // src/data/navigation.ts
-import { Home, LayoutGrid, ImageIcon, Mail, MessageCircle, FolderIcon, FolderRootIcon } from "lucide-react"
+import { Home, LayoutGrid, ImageIcon, Mail, MessageCircle, FolderRootIcon } from "lucide-react"
 import { NavLink } from '@/types'
 
 // Linki nawigacyjne
