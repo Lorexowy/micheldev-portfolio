@@ -1,8 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { Sun, Moon, Menu, X } from "lucide-react"
-import { useTheme } from "next-themes"
+import { Menu, X } from "lucide-react"
 import { motion, type Variants } from "framer-motion"
 
 import { navLinks, getMobileNavLinks } from "@/data/navigation"
@@ -35,17 +34,11 @@ const mobileMenuPanelVariants: Variants = {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
   const [activeSection, setActiveSection] = useState<SectionId>("hero") 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false) 
 
   // Get mobile nav links without empty labels
   const mobileNavLinks = getMobileNavLinks()
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -147,8 +140,6 @@ export default function Navbar() {
     }
   }, [isMobileMenuOpen])
 
-  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark")
-
   return (
     <>
       {/* gradient w defs */}
@@ -165,14 +156,14 @@ export default function Navbar() {
       <header
         className={`
           lg:hidden fixed inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-2
-          bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800
+          bg-gray-950 border-b border-gray-800
           transition-all duration-300 ease-out
           ${scrolled ? "shadow-md" : "shadow-none"}
         `}
       >
         <button
           onClick={() => scrollToSection("hero")}
-          className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white"
+          className="flex items-center gap-2 text-lg font-semibold text-white"
           aria-label="Strona główna"
         >
           {/* Use the Home icon from navLinks */}
@@ -181,7 +172,7 @@ export default function Navbar() {
         </button>
         <button
           onClick={() => setIsMobileMenuOpen(true)}
-          className="p-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+          className="p-2 rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
           aria-label="Otwórz menu nawigacyjne"
         >
           <Menu className="h-7 w-7" />
@@ -200,13 +191,13 @@ export default function Navbar() {
             initial="hidden"
             animate={isMobileMenuOpen ? "visible" : "hidden"}
             variants={mobileMenuPanelVariants}
-            className="w-full max-w-xs sm:max-w-sm bg-white dark:bg-gray-950 h-full shadow-2xl p-6 flex flex-col rounded-l-lg"
+            className="w-full max-w-xs sm:max-w-sm bg-gray-950 h-full shadow-2xl p-6 flex flex-col rounded-l-lg"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-end mb-8">
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="p-2 rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="p-2 rounded-md text-gray-300 hover:bg-gray-800 transition-colors"
                 aria-label="Zamknij menu nawigacyjne"
               >
                 <X className="h-7 w-7" />
@@ -232,13 +223,13 @@ export default function Navbar() {
                                   ${
                                     isActive
                                       ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white"
-                                      : "text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                      : "text-gray-200 hover:bg-gray-800"
                                   }`}
                       aria-label={link.ariaLabel || link.label || undefined}
                     >
                       {React.createElement(link.icon, { 
                         size: 22, 
-                        className: isActive ? "text-white" : "text-gray-600 dark:text-gray-400" 
+                        className: isActive ? "text-white" : "text-gray-400" 
                       })}
                       <span>{link.label}</span>
                     </button>
@@ -246,24 +237,6 @@ export default function Navbar() {
                 )
               })}
             </motion.nav>
-            <div className="mt-auto pt-6 border-t border-gray-200 dark:border-gray-700">
-              <button
-                onClick={() => {
-                  toggleTheme()
-                  setIsMobileMenuOpen(false)
-                }}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg text-lg font-semibold w-full justify-start
-                           transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-800 dark:text-gray-200"
-                aria-label="Przełącz motyw"
-              >
-                {mounted && theme === "dark" ? (
-                  <Sun size={22} className="text-gray-600 dark:text-gray-400" />
-                ) : (
-                  <Moon size={22} className="text-gray-600 dark:text-gray-400" />
-                )}
-                <span>Przełącz motyw</span>
-              </button>
-            </div>
           </motion.div>
         </motion.div>
       </header>
@@ -279,12 +252,12 @@ export default function Navbar() {
           className={`
             pointer-events-auto flex items-center
             px-3 py-1.5 sm:px-5 sm:py-2 gap-2 sm:gap-4 rounded-full max-w-max mx-auto
-            bg-white/20 dark:bg-black/70
+            bg-black/70
             backdrop-filter backdrop-blur-xl backdrop-saturate-150 backdrop-hue-rotate-10
             transition-all duration-300 ease-out
             ${
               scrolled
-                ? "backdrop-blur-3xl backdrop-saturate-200 backdrop-hue-rotate-15 bg-white/30 dark:bg-black/40 shadow-md"
+                ? "backdrop-blur-3xl backdrop-saturate-200 backdrop-hue-rotate-15 bg-black/40 shadow-md"
                 : "shadow-none"
             }
           `}
@@ -304,7 +277,7 @@ export default function Navbar() {
                   onClick={() => scrollToSection(link.targetId as SectionId)}
                   className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full
                               text-sm font-medium transition-all duration-200 ease-out
-                              ${isActive ? "bg-white/25 dark:bg-black/50" : ""}`}
+                              ${isActive ? "bg-black/50" : ""}`}
                   aria-label={link.ariaLabel || link.label || undefined}
                 >
                   <span
@@ -324,28 +297,6 @@ export default function Navbar() {
               </motion.div>
             )
           })}
-
-          {/* Theme toggle */}
-          <motion.div
-            variants={itemVariants}
-            onMouseEnter={() => setHoveredIdx(navLinks.length)}
-            onMouseLeave={() => setHoveredIdx(null)}
-            className="pl-2 sm:pl-3 border-l border-white/40 dark:border-white/20 rounded-full"
-          >
-            <button
-              onClick={toggleTheme}
-              className="flex items-center p-1.5 sm:p-2 rounded-full transition-all duration-200 ease-out"
-              aria-label="Przełącz motyw"
-            >
-              {mounted && theme === "dark" ? (
-                <Sun size={20} color={hoveredIdx === navLinks.length ? "url(#nav-gradient)" : "#ffffff"} fill="none" />
-              ) : mounted && theme === "light" ? (
-                <Moon size={20} color={hoveredIdx === navLinks.length ? "url(#nav-gradient)" : "#ffffff"} fill="none" />
-              ) : (
-                <Moon size={20} color="#ffffff" fill="none" />
-              )}
-            </button>
-          </motion.div>
         </motion.div>
       </motion.nav>
     </>
